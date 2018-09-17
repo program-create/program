@@ -3,8 +3,6 @@ package com.qfedu.pojo;
 public class Book {
     private Integer id;
 
-    private Integer typeid;
-
     private String name;
 
     private Integer auid;
@@ -17,7 +15,11 @@ public class Book {
 
     private Integer wordnum;
 
-    private Integer info;
+    private String info;
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
     public Integer getId() {
         return id;
@@ -27,13 +29,6 @@ public class Book {
         this.id = id;
     }
 
-    public Integer getTypeid() {
-        return typeid;
-    }
-
-    public void setTypeid(Integer typeid) {
-        this.typeid = typeid;
-    }
 
     public String getName() {
         return name;
@@ -81,13 +76,5 @@ public class Book {
 
     public void setWordnum(Integer wordnum) {
         this.wordnum = wordnum;
-    }
-
-    public Integer getInfo() {
-        return info;
-    }
-
-    public void setInfo(Integer info) {
-        this.info = info;
     }
 }
