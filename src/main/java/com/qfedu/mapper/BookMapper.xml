@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qfedu.mapper.BookMapper" >
+  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Book" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="auid" property="auid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="coverimg" property="coverimg" jdbcType="VARCHAR" />
+    <result column="expense" property="expense" jdbcType="VARCHAR" />
+    <result column="wordnum" property="wordnum" jdbcType="INTEGER" />
+    <result column="info" property="info" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, typeid, name, auid, status, coverimg, expense, wordnum, info
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_book
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_book
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qfedu.pojo.Book" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_book (typeid, name, auid, 
+      status, coverimg, expense, 
+      wordnum, info)
+    values (#{typeid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{auid,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{coverimg,jdbcType=VARCHAR}, #{expense,jdbcType=VARCHAR}, 
+      #{wordnum,jdbcType=INTEGER}, #{info,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qfedu.pojo.Book" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_book
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="typeid != null" >
+        typeid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="auid != null" >
+        auid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="coverimg != null" >
+        coverimg,
+      </if>
+      <if test="expense != null" >
+        expense,
+      </if>
+      <if test="wordnum != null" >
+        wordnum,
+      </if>
+      <if test="info != null" >
+        info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="typeid != null" >
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="auid != null" >
+        #{auid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="coverimg != null" >
+        #{coverimg,jdbcType=VARCHAR},
+      </if>
+      <if test="expense != null" >
+        #{expense,jdbcType=VARCHAR},
+      </if>
+      <if test="wordnum != null" >
+        #{wordnum,jdbcType=INTEGER},
+      </if>
+      <if test="info != null" >
+        #{info,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Book" >
+    update t_book
+    <set >
+      <if test="typeid != null" >
+        typeid = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="auid != null" >
+        auid = #{auid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="coverimg != null" >
+        coverimg = #{coverimg,jdbcType=VARCHAR},
+      </if>
+      <if test="expense != null" >
+        expense = #{expense,jdbcType=VARCHAR},
+      </if>
+      <if test="wordnum != null" >
+        wordnum = #{wordnum,jdbcType=INTEGER},
+      </if>
+      <if test="info != null" >
+        info = #{info,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Book" >
+    update t_book
+    set typeid = #{typeid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      auid = #{auid,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      coverimg = #{coverimg,jdbcType=VARCHAR},
+      expense = #{expense,jdbcType=VARCHAR},
+      wordnum = #{wordnum,jdbcType=INTEGER},
+      info = #{info,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
