@@ -16,10 +16,9 @@
   <sql id="Base_Column_List" >
     id, name, auid, typeid, status, coverimg, expense, wordnum,flag, info
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_book
+  <select id="selectByPrimaryKey" resultMap="BookDetail" parameterType="java.lang.Integer" >
+    select book.* , author.nickname as authorname from t_book book
+    left join t_author author on book.auid = author.id
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -161,9 +160,10 @@
     <association property="author" javaType="com.qfedu.pojo.Author">
       <result property="nickname" column="authorname"  jdbcType="VARCHAR"></result>
     </association>
-    <collection property="review" ofType="com.qfedu.pojo.Review">
-
-    </collection>
   </resultMap>
-  <select id="selectByName" resultMap=""
+  <select id="selectByName" resultMap="BookDetail" >
+    select book.* , author.nickname as authorname from t_book book
+    left join t_author author on book.auid = author.id
+    where book.name =#{bookname}
+  </select>
 </mapper>

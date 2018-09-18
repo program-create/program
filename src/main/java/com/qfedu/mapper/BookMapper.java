@@ -17,7 +17,7 @@ public interface BookMapper {
     int updateByPrimaryKey (Book record);
 
     //根据书名查询图书
-    Book selectByName(String name);
+    Book selectByName(String bookname);
 
     //根据类型查询某一类图书
     PageVo<Book> seleckByType(int typeid);
