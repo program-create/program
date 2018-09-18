@@ -3,9 +3,9 @@ package com.qfedu.pojo;
 public class Tag {
     private Integer id;
 
-    private String type;
+    private Integer taglistid;
 
-    private String name;
+    private String tagname;
 
     private Integer auid;
 
@@ -17,20 +17,20 @@ public class Tag {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public Integer getTaglistid() {
+        return taglistid;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setTaglistid(Integer taglistid) {
+        this.taglistid = taglistid;
     }
 
-    public String getName() {
-        return name;
+    public String getTagname() {
+        return tagname;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setTagname(String tagname) {
+        this.tagname = tagname == null ? null : tagname.trim();
     }
 
     public Integer getAuid() {

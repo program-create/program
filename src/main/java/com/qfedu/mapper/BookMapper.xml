@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="auid" property="auid" jdbcType="INTEGER" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="coverimg" property="coverimg" jdbcType="VARCHAR" />
     <result column="expense" property="expense" jdbcType="VARCHAR" />
@@ -12,7 +13,7 @@
     <result column="info" property="info" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, auid, status, coverimg, expense, wordnum, info
+    id, name, auid, typeid, status, coverimg, expense, wordnum, info
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,10 +29,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_book ( name, auid,
+    insert into t_book (name, auid, typeid, 
       status, coverimg, expense, 
       wordnum, info)
-    values (#{name,jdbcType=VARCHAR}, #{auid,jdbcType=INTEGER},
+    values (#{name,jdbcType=VARCHAR}, #{auid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, 
       #{status,jdbcType=VARCHAR}, #{coverimg,jdbcType=VARCHAR}, #{expense,jdbcType=VARCHAR}, 
       #{wordnum,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR})
   </insert>
@@ -41,12 +42,14 @@
     </selectKey>
     insert into t_book
     <trim prefix="(" suffix=")" suffixOverrides="," >
-
       <if test="name != null" >
         name,
       </if>
       <if test="auid != null" >
         auid,
+      </if>
+      <if test="typeid != null" >
+        typeid,
       </if>
       <if test="status != null" >
         status,
@@ -65,12 +68,14 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="auid != null" >
         #{auid,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null" >
+        #{typeid,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -92,12 +97,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Book" >
     update t_book
     <set >
-
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="auid != null" >
         auid = #{auid,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null" >
+        typeid = #{typeid,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -119,9 +126,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Book" >
     update t_book
-    set
-      name = #{name,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
       auid = #{auid,jdbcType=INTEGER},
+      typeid = #{typeid,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
       coverimg = #{coverimg,jdbcType=VARCHAR},
       expense = #{expense,jdbcType=VARCHAR},

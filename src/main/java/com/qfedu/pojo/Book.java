@@ -7,6 +7,8 @@ public class Book {
 
     private Integer auid;
 
+    private Integer typeid;
+
     private String status;
 
     private String coverimg;
@@ -17,10 +19,6 @@ public class Book {
 
     private String info;
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -28,7 +26,6 @@ public class Book {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;
@@ -44,6 +41,14 @@ public class Book {
 
     public void setAuid(Integer auid) {
         this.auid = auid;
+    }
+
+    public Integer getTypeid() {
+        return typeid;
+    }
+
+    public void setTypeid(Integer typeid) {
+        this.typeid = typeid;
     }
 
     public String getStatus() {
@@ -76,5 +81,13 @@ public class Book {
 
     public void setWordnum(Integer wordnum) {
         this.wordnum = wordnum;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info == null ? null : info.trim();
     }
 }

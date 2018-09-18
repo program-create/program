@@ -3,12 +3,12 @@
 <mapper namespace="com.qfedu.mapper.TagMapper" >
   <resultMap id="BaseResultMap" type="com.qfedu.pojo.Tag" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="taglistid" property="taglistid" jdbcType="INTEGER" />
+    <result column="tagname" property="tagname" jdbcType="VARCHAR" />
     <result column="auid" property="auid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, type, name, auid
+    id, taglistid, tagname, auid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,9 +24,9 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_tag (type, name, auid
+    insert into t_tag (taglistid, tagname, auid
       )
-    values (#{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{auid,jdbcType=INTEGER}
+    values (#{taglistid,jdbcType=INTEGER}, #{tagname,jdbcType=VARCHAR}, #{auid,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Tag" >
@@ -35,22 +35,22 @@
     </selectKey>
     insert into t_tag
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="type != null" >
-        type,
+      <if test="taglistid != null" >
+        taglistid,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="tagname != null" >
+        tagname,
       </if>
       <if test="auid != null" >
         auid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+      <if test="taglistid != null" >
+        #{taglistid,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="tagname != null" >
+        #{tagname,jdbcType=VARCHAR},
       </if>
       <if test="auid != null" >
         #{auid,jdbcType=INTEGER},
@@ -60,11 +60,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Tag" >
     update t_tag
     <set >
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+      <if test="taglistid != null" >
+        taglistid = #{taglistid,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="tagname != null" >
+        tagname = #{tagname,jdbcType=VARCHAR},
       </if>
       <if test="auid != null" >
         auid = #{auid,jdbcType=INTEGER},
@@ -74,8 +74,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Tag" >
     update t_tag
-    set type = #{type,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
+    set taglistid = #{taglistid,jdbcType=INTEGER},
+      tagname = #{tagname,jdbcType=VARCHAR},
       auid = #{auid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
