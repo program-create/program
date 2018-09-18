@@ -10,10 +10,11 @@
     <result column="coverimg" property="coverimg" jdbcType="VARCHAR" />
     <result column="expense" property="expense" jdbcType="VARCHAR" />
     <result column="wordnum" property="wordnum" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
     <result column="info" property="info" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, auid, typeid, status, coverimg, expense, wordnum, info
+    id, name, auid, typeid, status, coverimg, expense, wordnum,flag, info
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -31,10 +32,10 @@
     </selectKey>
     insert into t_book (name, auid, typeid, 
       status, coverimg, expense, 
-      wordnum, info)
+      wordnum, flag,info)
     values (#{name,jdbcType=VARCHAR}, #{auid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, 
       #{status,jdbcType=VARCHAR}, #{coverimg,jdbcType=VARCHAR}, #{expense,jdbcType=VARCHAR}, 
-      #{wordnum,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR})
+      #{wordnum,jdbcType=INTEGER},#{flag,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Book" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -63,6 +64,9 @@
       <if test="wordnum != null" >
         wordnum,
       </if>
+      <if test="flag != null" >
+        flag,
+      </if>
       <if test="info != null" >
         info,
       </if>
@@ -88,6 +92,9 @@
       </if>
       <if test="wordnum != null" >
         #{wordnum,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
       </if>
       <if test="info != null" >
         #{info,jdbcType=VARCHAR},
@@ -118,6 +125,9 @@
       <if test="wordnum != null" >
         wordnum = #{wordnum,jdbcType=INTEGER},
       </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
       <if test="info != null" >
         info = #{info,jdbcType=VARCHAR},
       </if>
@@ -133,7 +143,27 @@
       coverimg = #{coverimg,jdbcType=VARCHAR},
       expense = #{expense,jdbcType=VARCHAR},
       wordnum = #{wordnum,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER},
       info = #{info,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <resultMap id="BookDetail" type="com.qfedu.pojo.Book">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="auid" property="auid" jdbcType="INTEGER" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="coverimg" property="coverimg" jdbcType="VARCHAR" />
+    <result column="expense" property="expense" jdbcType="VARCHAR" />
+    <result column="wordnum" property="wordnum" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="info" property="info" jdbcType="VARCHAR" />
+    <association property="author" javaType="com.qfedu.pojo.Author">
+      <result property="nickname" column="authorname"  jdbcType="VARCHAR"></result>
+    </association>
+    <collection property="review" ofType="com.qfedu.pojo.Review">
+
+    </collection>
+  </resultMap>
+  <select id="selectByName" resultMap=""
 </mapper>
