@@ -30,7 +30,7 @@ public class JedisUtil {
     public void addStr(String key,String value){
         jedis.set(key,value);
     }
-
+    //新增指定时间
     public void addStr(String key,String value,TimeUnit unit,int time){
         addStr(key,value);
         expire(key,unit,time);
