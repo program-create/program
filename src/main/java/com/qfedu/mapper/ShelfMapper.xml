@@ -27,8 +27,7 @@
     </selectKey>
     insert into t_shelf (uid, bookid, newchaptername, 
       createdate)
-    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{newchaptername,jdbcType=INTEGER}, 
-      #{createdate,jdbcType=TIMESTAMP})
+    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{newchaptername,jdbcType=INTEGER},now())
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Shelf" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >

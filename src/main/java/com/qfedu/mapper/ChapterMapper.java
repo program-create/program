@@ -16,4 +16,6 @@ public interface ChapterMapper {
     int updateByPrimaryKeyWithBLOBs (Chapter record);
 
     int updateByPrimaryKey (Chapter record);
+
+    int selectMax(int bookid);
 }
