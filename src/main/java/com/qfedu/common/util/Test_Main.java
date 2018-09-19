@@ -7,7 +7,7 @@ public class Test_Main {
 
 
     public static void main (String[] args) {
-        System.out.println("12345:" + ShiroEncryUtil.md5("12345"));
+        System.out.println("1997:" + ShiroEncryUtil.md5("1997"));
     }
 }
 
