@@ -7,19 +7,20 @@
     <result column="auid" property="auid" jdbcType="INTEGER" />
     <result column="typeid" property="typeid" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="coverimg" property="coverimg" jdbcType="VARCHAR" />
     <result column="expense" property="expense" jdbcType="VARCHAR" />
     <result column="wordnum" property="wordnum" jdbcType="INTEGER" />
     <result column="flag" property="flag" jdbcType="INTEGER" />
     <result column="info" property="info" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, auid, typeid, status, coverimg, expense, wordnum,flag, info
+    id, name, auid, typeid, status, expense, wordnum,flag, info
   </sql>
   <select id="selectByPrimaryKey" resultMap="BookDetail" parameterType="java.lang.Integer" >
-    select book.* , author.nickname as authorname from t_book book
-    left join t_author author on book.auid = author.id
-    where id = #{id,jdbcType=INTEGER}
+    select book.* , author.nickname as authorname ,img.bookimg ,ty.name as typename from t_book book
+    left join  t_author author on book.auid = author.id
+    left join t_bookimg img on img.bookid = book.id
+    left join t_type ty on ty.id = book.typeid
+    where id = #{id}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_book
@@ -30,10 +31,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_book (name, auid, typeid, 
-      status, coverimg, expense, 
+      status, expense,
       wordnum, flag,info)
     values (#{name,jdbcType=VARCHAR}, #{auid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, 
-      #{status,jdbcType=VARCHAR}, #{coverimg,jdbcType=VARCHAR}, #{expense,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR},  #{expense,jdbcType=VARCHAR},
       #{wordnum,jdbcType=INTEGER},#{flag,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Book" >
@@ -53,9 +54,6 @@
       </if>
       <if test="status != null" >
         status,
-      </if>
-      <if test="coverimg != null" >
-        coverimg,
       </if>
       <if test="expense != null" >
         expense,
@@ -82,9 +80,6 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="coverimg != null" >
-        #{coverimg,jdbcType=VARCHAR},
       </if>
       <if test="expense != null" >
         #{expense,jdbcType=VARCHAR},
@@ -115,9 +110,6 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="coverimg != null" >
-        coverimg = #{coverimg,jdbcType=VARCHAR},
-      </if>
       <if test="expense != null" >
         expense = #{expense,jdbcType=VARCHAR},
       </if>
@@ -139,7 +131,6 @@
       auid = #{auid,jdbcType=INTEGER},
       typeid = #{typeid,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
-      coverimg = #{coverimg,jdbcType=VARCHAR},
       expense = #{expense,jdbcType=VARCHAR},
       wordnum = #{wordnum,jdbcType=INTEGER},
       flag = #{flag,jdbcType=INTEGER},
@@ -152,18 +143,37 @@
     <result column="auid" property="auid" jdbcType="INTEGER" />
     <result column="typeid" property="typeid" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="coverimg" property="coverimg" jdbcType="VARCHAR" />
     <result column="expense" property="expense" jdbcType="VARCHAR" />
     <result column="wordnum" property="wordnum" jdbcType="INTEGER" />
     <result column="flag" property="flag" jdbcType="INTEGER" />
     <result column="info" property="info" jdbcType="VARCHAR" />
     <association property="author" javaType="com.qfedu.pojo.Author">
+      <id column="auid" property="id" jdbcType="INTEGER"></id>
       <result property="nickname" column="authorname"  jdbcType="VARCHAR"></result>
+      <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+      <result column="password" property="password" jdbcType="VARCHAR" />
+      <result column="phone" property="phone" jdbcType="VARCHAR" />
+      <result column="flag" property="flag" jdbcType="INTEGER" />
+      <result column="createtime" property="createtime" jdbcType="DATE" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="qqnumber" property="qqnumber" jdbcType="INTEGER" />
+      <result column="headimg" property="headimg" jdbcType="VARCHAR" />
     </association>
+    <collection property="bookimg" ofType="com.qfedu.pojo.Bookimg" >
+      <id column="bookimgid" property="id" jdbcType="INTEGER"></id>
+      <result property="bookimg" column="bookimg" jdbcType="VARCHAR"></result>
+      <result column="bookid" property="bookid" javaType="INTEGER"></result>
+    </collection>
+    <collection property="type" ofType="com.qfedu.pojo.Type">
+      <id column="typeid" property="id" jdbcType="INTEGER"></id>
+      <result property="name" column="typename"></result>
+    </collection>
   </resultMap>
   <select id="selectByName" resultMap="BookDetail" >
-    select book.* , author.nickname as authorname from t_book book
-    left join t_author author on book.auid = author.id
-    where book.name =#{bookname}
+    select book.* , author.nickname ,img.bookimg ,ty.name from t_book book
+    left join  t_author author on book.auid = author.id
+    left join t_bookimg img on img.bookid = book.id
+    left join t_type ty on ty.id = book.typeid
+    where book.name = #{bookname}
   </select>
 </mapper>

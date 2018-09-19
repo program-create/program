@@ -1,5 +1,7 @@
 package com.qfedu.pojo;
 
+import java.util.List;
+
 public class Book {
     private Integer id;
 
@@ -11,13 +13,53 @@ public class Book {
 
     private String status;
 
-    private String coverimg;
-
     private String expense;
 
     private Integer wordnum;
 
+    private int flag;
+
+    public List<Bookimg> getBookimg() {
+        return bookimg;
+    }
+
+    public void setBookimg(List<Bookimg> bookimg) {
+        this.bookimg = bookimg;
+    }
+
+    public List<Type> getType() {
+        return type;
+    }
+
+    public void setType(List<Type> type) {
+        this.type = type;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
     private String info;
+
+    private Author author;
+
+    private List<Bookimg> bookimg;
+
+    private List<Type> type;
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+
 
     public Integer getId() {
         return id;
@@ -57,14 +99,6 @@ public class Book {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
-    }
-
-    public String getCoverimg() {
-        return coverimg;
-    }
-
-    public void setCoverimg(String coverimg) {
-        this.coverimg = coverimg == null ? null : coverimg.trim();
     }
 
     public String getExpense() {
