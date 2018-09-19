@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qfedu.mapper.ChapterMapper" >
+  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Chapter" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bookid" property="bookid" jdbcType="INTEGER" />
+    <result column="chaptername" property="chaptername" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.qfedu.pojo.Chapter" extends="BaseResultMap" >
+    <result column="chaptercontent" property="chaptercontent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, bookid, chaptername
+  </sql>
+  <sql id="Blob_Column_List" >
+    chaptercontent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_chapter
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_chapter
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qfedu.pojo.Chapter" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_chapter (bookid, chaptername, chaptercontent
+      )
+    values (#{bookid,jdbcType=INTEGER}, #{chaptername,jdbcType=VARCHAR}, #{chaptercontent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qfedu.pojo.Chapter" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_chapter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookid != null" >
+        bookid,
+      </if>
+      <if test="chaptername != null" >
+        chaptername,
+      </if>
+      <if test="chaptercontent != null" >
+        chaptercontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookid != null" >
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="chaptername != null" >
+        #{chaptername,jdbcType=VARCHAR},
+      </if>
+      <if test="chaptercontent != null" >
+        #{chaptercontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Chapter" >
+    update t_chapter
+    <set >
+      <if test="bookid != null" >
+        bookid = #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="chaptername != null" >
+        chaptername = #{chaptername,jdbcType=VARCHAR},
+      </if>
+      <if test="chaptercontent != null" >
+        chaptercontent = #{chaptercontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.qfedu.pojo.Chapter" >
+    update t_chapter
+    set bookid = #{bookid,jdbcType=INTEGER},
+      chaptername = #{chaptername,jdbcType=VARCHAR},
+      chaptercontent = #{chaptercontent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Chapter" >
+    update t_chapter
+    set bookid = #{bookid,jdbcType=INTEGER},
+      chaptername = #{chaptername,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectMax" resultType="int">
+    select MAX(id) from t_chapter GROUP BY bookid HAVING bookid=#{bookid}
+  </select>
+</mapper>
