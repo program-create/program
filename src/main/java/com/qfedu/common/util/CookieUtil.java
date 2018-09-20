@@ -24,7 +24,8 @@ public class CookieUtil {
     public static void setCK(HttpServletResponse response, String name, String value){
         Cookie cookie=new Cookie(name,value);
         cookie.setMaxAge(-1);
-        cookie.setDomain("39.104.99.70");
+//        cookie.setDomain("39.104.99.70");
+        cookie.setDomain("localhost");
         cookie.setPath("/");
         response.addCookie(cookie);
     }
@@ -32,7 +33,8 @@ public class CookieUtil {
     public static void delCK(HttpServletResponse response, String name){
         Cookie cookie=new Cookie(name,"");
         cookie.setMaxAge(0);
-        cookie.setDomain("39.104.99.70");
+//        cookie.setDomain("39.104.99.70");
+        cookie.setDomain("localhost");
         cookie.setPath("/");
         response.addCookie(cookie);
     }
