@@ -17,9 +17,12 @@
     from t_mark
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteById" parameterType="int">
     delete from t_mark
-    where id = #{id,jdbcType=INTEGER}
+    where id in
+    <foreach collection="list" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
   </delete>
   <insert id="insert" parameterType="com.qfedu.pojo.Mark" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -27,8 +30,7 @@
     </selectKey>
     insert into t_mark (uid, bookid, chapterid, 
       createdate)
-    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{chapterid,jdbcType=INTEGER}, 
-      #{createdate,jdbcType=TIMESTAMP})
+    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{chapterid,jdbcType=INTEGER},now())
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Mark" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -90,4 +92,11 @@
       createdate = #{createdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByUid" resultType="com.qfedu.common.vo.ShelfVo">
+    SELECT ma.id,ma.bookid,ma.chapterid as newchapterid,bo.`name` as bookname ,
+au.id as auid ,ch.chaptername as newchaptername ,au.nickname as authname,ma.createdate from t_mark ma
+INNER JOIN t_book bo on ma.bookid=bo.id
+INNER JOIN  t_chapter ch on ma.chapterid=ch.id INNER JOIN t_author au on au.id=bo.auid where uid=#{uid}
+  </select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.qfedu.web.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.qfedu.common.redis.JedisUtil;
 import com.qfedu.common.redis.RedisUtil;
 import com.qfedu.common.util.TokenTool;
 import com.qfedu.common.vo.R;
@@ -18,7 +20,7 @@ import javax.servlet.http.HttpSession;
 public class ShelfController {
     @Autowired
     private ShelfService shelfService;
-    @Autowired
+   @Autowired
     private RedisUtil redisUtil;
     //向我的书架添加小说
     @RequestMapping("/addbook.do")
@@ -34,5 +36,20 @@ public class ShelfController {
             shelf.setUid(user.getId());
             return shelfService.save(shelf);
         }
+    }
+    //展示书架中的小说
+    @RequestMapping("/listshelf.do")
+    @ResponseBody
+    public R listShelf(HttpServletRequest request){
+        //从cookie中获取用户信息
+        String token = TokenTool.getToken(request);
+        User user = (User) redisUtil.get(token);
+
+        return shelfService.listShelf(user.getId());
+    }
+    //删除选中的书架id
+    public R delShelf(HttpServletRequest request){
+        String[] arr = request.getParameterValues("id");
+        return shelfService.delShelf(arr);
     }
 }

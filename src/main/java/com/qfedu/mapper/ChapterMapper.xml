@@ -94,6 +94,6 @@
   </update>
 
   <select id="selectMax" resultType="int">
-    select MAX(id) from t_chapter where bookid = #{bookid}
+    select MAX(id) from t_chapter GROUP BY bookid HAVING bookid=#{bookid}
   </select>
 </mapper>
