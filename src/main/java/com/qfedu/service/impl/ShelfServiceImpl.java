@@ -1,6 +1,7 @@
 package com.qfedu.service.impl;
 
 import com.qfedu.common.vo.R;
+import com.qfedu.common.vo.ShelfVo;
 import com.qfedu.mapper.ChapterMapper;
 import com.qfedu.mapper.ShelfMapper;
 import com.qfedu.pojo.Shelf;
@@ -8,6 +9,9 @@ import com.qfedu.service.ShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.net.www.HeaderParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ShelfServiceImpl implements ShelfService {
@@ -29,4 +33,30 @@ public class ShelfServiceImpl implements ShelfService {
         }
         return i>0?R.ok():R.error();
     }
+
+    //展示书架
+    @Override
+    public R listShelf(int uid) {
+        try {
+            List<ShelfVo> shelfList = shelfMapper.selectbyuid(uid);
+            return R.res(1,"书架展示列表",shelfList);
+        }catch (Exception e){
+            return R.res(0,"没有添加任何小说",null);
+        }
+    }
+    //删除书架中选中的书记
+    @Override
+    public R delShelf(String[] arr) {
+        //判断传入的参数是否为空
+        if (arr!=null&&arr.length>0){
+            List list = new ArrayList();
+            for (int i=0;i<arr.length;i++){
+                  list.add(arr[i]);
+            }
+            int i = shelfMapper.deleteById(list);
+            return R.ok();
+        }
+        return R.error();
+    }
+
 }
