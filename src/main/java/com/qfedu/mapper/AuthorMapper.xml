@@ -26,14 +26,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="save" parameterType="com.qfedu.pojo.Author" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into t_author (nickname, password, phone, 
       flag, createtime, email, 
       qqnumber, headimg)
     values (#{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{flag,jdbcType=INTEGER}, #{createtime,jdbcType=DATE}, #{email,jdbcType=VARCHAR}, 
+      1, now(), #{email,jdbcType=VARCHAR},
       #{qqnumber,jdbcType=INTEGER}, 'http:////img4.duitang.com//uploads//item//201611//23//20161123172514_ueSAZ.jpeg')
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Author" >
