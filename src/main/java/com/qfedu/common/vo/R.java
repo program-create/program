@@ -1,5 +1,7 @@
 package com.qfedu.common.vo;
 
+import java.util.List;
+
 /*统一json结果类 非查询*/
 public class R {
     private int code;
@@ -44,5 +46,9 @@ public class R {
     }
     public static R error(){
         return new R(1,"失败",null);
+    }
+
+    public static <M> R res(int code, String msg, List<M> data){
+        return new R(code,msg,data);
     }
 }

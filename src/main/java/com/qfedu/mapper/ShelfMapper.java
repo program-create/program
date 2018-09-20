@@ -1,17 +1,24 @@
 package com.qfedu.mapper;
 
+import com.qfedu.common.vo.ShelfVo;
 import com.qfedu.pojo.Shelf;
 
+import java.util.List;
+
 public interface ShelfMapper {
-    int deleteByPrimaryKey (Integer id);
 
-    int insert (Shelf record);
+    int deleteById(List list);
 
-    int insertSelective (Shelf record);
+    int insert(Shelf record);
 
-    Shelf selectByPrimaryKey (Integer id);
+    int insertSelective(Shelf record);
 
-    int updateByPrimaryKeySelective (Shelf record);
+    Shelf selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKey (Shelf record);
+    int updateByPrimaryKeySelective(Shelf record);
+
+    int updateByPrimaryKey(Shelf record);
+
+    List<ShelfVo> selectbyuid(int uid);
+
 }

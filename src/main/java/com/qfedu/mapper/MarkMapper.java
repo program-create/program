@@ -1,9 +1,12 @@
 package com.qfedu.mapper;
 
+import com.qfedu.common.vo.ShelfVo;
 import com.qfedu.pojo.Mark;
 
+import java.util.List;
+
 public interface MarkMapper {
-    int deleteByPrimaryKey (Integer id);
+    int deleteById (List list);
 
     int insert (Mark record);
 
@@ -14,4 +17,6 @@ public interface MarkMapper {
     int updateByPrimaryKeySelective (Mark record);
 
     int updateByPrimaryKey (Mark record);
+
+    List<ShelfVo> selectByUid(int uid);
 }

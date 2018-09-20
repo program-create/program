@@ -92,4 +92,8 @@
       chaptername = #{chaptername,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectMax" resultType="int">
+    select MAX(id) from t_chapter GROUP BY bookid HAVING bookid=#{bookid}
+  </select>
 </mapper>

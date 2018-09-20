@@ -25,7 +25,7 @@
     delete from t_author
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.qfedu.pojo.Author" >
+  <insert id="save" parameterType="com.qfedu.pojo.Author" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -34,7 +34,7 @@
       qqnumber, headimg)
     values (#{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{flag,jdbcType=INTEGER}, #{createtime,jdbcType=DATE}, #{email,jdbcType=VARCHAR}, 
-      #{qqnumber,jdbcType=INTEGER}, #{headimg,jdbcType=VARCHAR})
+      #{qqnumber,jdbcType=INTEGER}, 'http:////img4.duitang.com//uploads//item//201611//23//20161123172514_ueSAZ.jpeg')
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Author" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,14 +126,16 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Author" >
     update t_author
-    set nickname = #{nickname,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      flag = #{flag,jdbcType=INTEGER},
-      createtime = #{createtime,jdbcType=DATE},
-      email = #{email,jdbcType=VARCHAR},
-      qqnumber = #{qqnumber,jdbcType=INTEGER},
-      headimg = #{headimg,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    set password = #{password},
+      phone = #{phone},
+      flag = #{flag},
+      createtime = #{createtime},
+      email = #{email},
+      qqnumber = #{qqnumber},
+      headimg = #{headimg}
+    where nickname = #{nickname}
   </update>
+  <select id="queryByNickName" resultType="com.qfedu.pojo.Author">
+    select * rom t_author where nickname = #{nickname}
+  </select>
 </mapper>

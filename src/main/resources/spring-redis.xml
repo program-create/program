@@ -38,4 +38,10 @@
     <bean id="redisUtil" class="com.qfedu.common.redis.RedisUtil">
         <property name="redisTemplate" ref="redisTemplate"></property>
     </bean>
+
+  <!--  <bean id="jedisUtil" class="com.qfedu.common.redis.JedisUtil" scope="prototype">
+        <constructor-arg name="host" value="10.8.163.50"></constructor-arg>
+        <constructor-arg name="port" value="6379"></constructor-arg>
+        <constructor-arg name="password" value="qfjava"></constructor-arg>
+    </bean>-->
 </beans>
