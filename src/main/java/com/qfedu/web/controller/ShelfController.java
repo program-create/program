@@ -23,7 +23,7 @@ public class ShelfController {
    @Autowired
     private RedisUtil redisUtil;
     //向我的书架添加小说
-    @RequestMapping("/addbook.do")
+    @RequestMapping("/addbookshelf.do")
     @ResponseBody
     public R addShelf(Shelf shelf, HttpServletRequest request){
         //从cookie中获取用户信息
@@ -44,12 +44,14 @@ public class ShelfController {
         //从cookie中获取用户信息
         String token = TokenTool.getToken(request);
         User user = (User) redisUtil.get(token);
-
         return shelfService.listShelf(user.getId());
     }
     //删除选中的书架id
+    @RequestMapping("delshelf.do")
+    @ResponseBody
     public R delShelf(HttpServletRequest request){
         String[] arr = request.getParameterValues("id");
+        System.out.println(arr);
         return shelfService.delShelf(arr);
     }
 }

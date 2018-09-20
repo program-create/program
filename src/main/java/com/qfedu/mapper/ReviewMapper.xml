@@ -6,6 +6,8 @@
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="bookid" property="bookid" jdbcType="INTEGER" />
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="aucontent" property="aucontent" jdbcType="VARCHAR"/>
+    <result column="content" property="content" jdbcType="VARCHAR"/>
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.qfedu.pojo.Review" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
@@ -34,7 +36,7 @@
     </selectKey>
     insert into t_review (uid, bookid, createdate, 
       content)
-    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP}, 
+    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, now(),
       #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Review" >
@@ -104,4 +106,11 @@
       createdate = #{createdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByUid" resultType="com.qfedu.common.vo.ReViewVo">
+    select re.id,re.bookid,bo.auid,bo.`name` as bookname,re.content,re.aucontent,re.createdate from t_review re
+LEFT JOIN t_book bo on bo.id=re.bookid
+LEFT JOIN t_author au on au.id=bo.auid
+where uid=#{uid}
+  </select>
 </mapper>
