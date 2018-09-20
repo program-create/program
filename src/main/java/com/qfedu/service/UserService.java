@@ -2,6 +2,7 @@ package com.qfedu.service;
 
 import com.qfedu.common.vo.R;
 import com.qfedu.pojo.User;
+import org.quartz.SchedulerException;
 
 public interface UserService {
     //    1.注册
@@ -27,4 +28,7 @@ public interface UserService {
 
     //    6.2.修改用户密码
     R updatePass (String password, String oripass, int id);
+
+    //    7.签到状态
+    public void delSignFlag() throws SchedulerException;
 }

@@ -5,6 +5,7 @@ import com.qfedu.common.util.*;
 import com.qfedu.common.vo.R;
 import com.qfedu.pojo.User;
 import com.qfedu.service.UserService;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -133,5 +134,15 @@ public class UserController {
         String token = TokenTool.getToken(req);
         User user = (User) redisUtil.get(token);
         return service.updatePass(password, oripass, user.getId());
+    }
+
+    //    9.签到状态
+    @RequestMapping("delSignFlag.do")
+    public void delSignFlag(){
+        try {
+            service.delSignFlag();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 }
