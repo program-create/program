@@ -53,8 +53,9 @@ public class ShelfServiceImpl implements ShelfService {
             for (int i=0;i<arr.length;i++){
                   list.add(arr[i]);
             }
+            System.out.println(list+"集合");
             int i = shelfMapper.deleteById(list);
-            return R.ok();
+            return i>0?R.ok():R.res(1,"书架中没有此书",null);
         }
         return R.error();
     }

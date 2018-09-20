@@ -13,6 +13,16 @@ public class Review {
 
     private String content;
 
+    private String aucontent;
+
+    public String getAucontent() {
+        return aucontent;
+    }
+
+    public void setAucontent(String aucontent) {
+        this.aucontent = aucontent;
+    }
+
     public Integer getId() {
         return id;
     }
