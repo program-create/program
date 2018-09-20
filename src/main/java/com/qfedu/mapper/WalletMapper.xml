@@ -101,4 +101,8 @@
       rechargetime = #{rechargetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateMonthticket" parameterType="java.lang.Integer">
+    update t_wallet set monthticket=#{monthticket} where SET
+    uid = #{id}
+  </update>
 </mapper>

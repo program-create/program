@@ -14,4 +14,8 @@ public interface WalletMapper {
     int updateByPrimaryKeySelective (Wallet record);
 
     int updateByPrimaryKey (Wallet record);
+
+    //赠送月票后减少月票
+    int updateMonthticket(int id,int monthticket);
+
 }

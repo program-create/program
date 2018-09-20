@@ -7,6 +7,9 @@ import com.qfedu.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -57,4 +60,16 @@ public class BookServiceImpl implements BookService {
 
         return bookMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<Map<String, Object>> queryBookByType(int typeid) {
+        return bookMapper.selectByType(typeid);
+    }
+
+
+    @Override
+    public List<Map<String, Object>> queryBookByTagOne(int typeid) {
+        return bookMapper.selectByTagOne(typeid);
+    }
+
 }

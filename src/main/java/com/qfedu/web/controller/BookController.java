@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class BookController {
@@ -67,31 +69,63 @@ public class BookController {
     //查询图书根据书名
     @RequestMapping("/querybookbyid.do")
     @ResponseBody
-    public RList<Book> querybookbyid(int id) {
+    public R querybookbyid(int id) {
 
-        System.out.println(id);
-
-
-        RList<Book> r=new RList<Book>();
-        List<Book> list = new ArrayList<Book>();
+        R r = new R();
         Book book = bookService.queryBookById(id);
-
-        list.add(book);
-        System.out.println(book);
 
         if (book != null ) {
             r.setCode(1001);
             r.setMsg("查询图书成功");
-            r.setDatas(list);
+            r.setData(book);
 
             return r;
         } else {
             r.setCode(1002);
             r.setMsg("查询失败");
-            r.setDatas(list);
+            r.setData(book);
             return r;
         }
+    }
 
+    @RequestMapping("querybookbytype.do")
+    @ResponseBody
+    public RList querybookbytype( int typeid) {
+        List<Map<String,Object>> mapList = bookService.queryBookByType(typeid);
+
+        RList r = new RList();
+        if (mapList.size() > 0) {
+            r.setCode(1001);
+            r.setMsg("查询成功");
+            r.setDatas(mapList);
+
+            return r;
+        }  else {
+            r.setCode(1002);
+            r.setMsg("查询失败");
+            r.setDatas(mapList);
+            return r;
+        }
+    }
+
+    @RequestMapping("querybookbytagone.do")
+    @ResponseBody
+    public RList querybookbytagone( int typeid) {
+        List<Map<String,Object>> mapList = bookService.queryBookByTagOne(typeid);
+
+        RList r = new RList();
+        if (mapList.size() > 0) {
+            r.setCode(1001);
+            r.setMsg("查询成功");
+            r.setDatas(mapList);
+
+            return r;
+        }  else {
+            r.setCode(1002);
+            r.setMsg("查询失败");
+            r.setDatas(mapList);
+            return r;
+        }
     }
 
 
