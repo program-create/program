@@ -161,7 +161,7 @@
     </association>
     <collection property="bookimg" ofType="com.qfedu.pojo.Bookimg" >
       <id column="bookimgid" property="id" jdbcType="INTEGER"></id>
-      <result property="bookimg" column="bookimg" jdbcType="VARCHAR"></result>
+      <result property="bookimages" column="images" jdbcType="VARCHAR"></result>
       <result column="bookid" property="bookid" javaType="INTEGER"></result>
     </collection>
     <collection property="type" ofType="com.qfedu.pojo.Type">
@@ -170,10 +170,12 @@
     </collection>
   </resultMap>
   <select id="selectByName" resultMap="BookDetail" >
-    select book.* , author.nickname ,img.bookimg ,ty.name from t_book book
+    select book.* , author.* ,img.images ,ty.* from t_book book
     left join  t_author author on book.auid = author.id
     left join t_bookimg img on img.bookid = book.id
     left join t_type ty on ty.id = book.typeid
     where book.name = #{bookname}
   </select>
+  <!--分类查询-->
+
 </mapper>

@@ -3,7 +3,7 @@ package com.qfedu.pojo;
 public class Bookimg {
     private Integer id;
 
-    private String bookimg;
+    private String bookimages;
 
     private Integer bookid;
 
@@ -16,11 +16,11 @@ public class Bookimg {
     }
 
     public String getBookimg() {
-        return bookimg;
+        return bookimages;
     }
 
     public void setBookimg(String bookimg) {
-        this.bookimg = bookimg == null ? null : bookimg.trim();
+        this.bookimages = bookimg == null ? null : bookimages.trim();
     }
 
     public Integer getBookid() {
