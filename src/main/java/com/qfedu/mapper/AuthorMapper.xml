@@ -136,6 +136,6 @@
     where nickname = #{nickname}
   </update>
   <select id="queryByNickName" resultType="com.qfedu.pojo.Author">
-    select * rom t_author where nickname = #{nickname}
+    select * from t_author where nickname=#{nickname}
   </select>
 </mapper>

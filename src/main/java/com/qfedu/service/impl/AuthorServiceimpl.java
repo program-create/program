@@ -2,7 +2,11 @@ package com.qfedu.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.qfedu.common.redis.JedisUtil;
+import com.qfedu.common.redis.RedisUtil;
+import com.qfedu.common.util.ALiYunNote;
+import com.qfedu.common.util.CookieUtil;
 import com.qfedu.common.util.EncrypUtil;
+import com.qfedu.common.util.ShiroEncryUtil;
 import com.qfedu.common.vo.R;
 import com.qfedu.mapper.AuthorMapper;
 import com.qfedu.pojo.Author;
@@ -10,6 +14,7 @@ import com.qfedu.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -19,14 +24,26 @@ public class AuthorServiceimpl implements AuthorService {
     @Autowired
     private AuthorMapper authorMapper;
     @Autowired
-    private JedisUtil jedisUtil;
+    private RedisUtil redisUtil;
 
-    //作者信息添加
+    //作者注册
     @Override
-    public R save(Author record) {
-        if (record != null) {
-            authorMapper.save(record);
-            return R.ok();
+    public R save(Author author,int args) {
+        if (author != null) {
+            String phone = author.getPhone();
+            //查看验证码是否失效
+            if (redisUtil.hasKey(phone)) {
+                //查询出Redis中的验证码
+                String args1 = (String) redisUtil.get(phone);
+                if (Objects.equals(args, args1)) {
+                    //加密密码在存入数据库
+                    author.setPassword(ShiroEncryUtil.md5(author.getPassword()));
+                    authorMapper.save(author);
+                    return R.ok();
+                }
+                return new R(1, "验证码不一致", null);
+            }
+            return new R(1, "验证码已失效", null);
         }
         return R.error();
     }
@@ -39,19 +56,21 @@ public class AuthorServiceimpl implements AuthorService {
 
     //登陆
     @Override
-    public R authorLogin(String nickname, String password) {
+    public R authorLogin(String nickname, String password, HttpServletResponse response) {
         //1、查询数据库
         Author author = authorMapper.queryByNickName(nickname);
+        System.out.println("用户信息："+author);
         //2、验证登陆信息
         if (author != null) {
             //用户存在
-            if (Objects.equals(author.getPassword(), password)) {
+            if (Objects.equals(author.getPassword(), ShiroEncryUtil.md5(password))) {
                 //登录成功
                 //3、生成令牌--唯一，复杂，密文
                 String token = EncrypUtil.md5Pass(author.getId().toString(), nickname);
                 //4、存储登陆信息到Redis
-                jedisUtil.addStr(token, JSON.toJSONString(author), TimeUnit.MINUTES, 30);
-                //5、令牌记录到Cookie---控制器(在Controller层)
+                redisUtil.set(token,author, 60*30);
+                //5、令牌记录到Cookie
+                CookieUtil.setCK(response, "token", token);
                 return new R(0, "登陆成功", token);
             }
             return new R(1, "密码错误", null);
@@ -64,14 +83,14 @@ public class AuthorServiceimpl implements AuthorService {
     @Override
     public R loginCheck(String token) {
         //判断该token是否存在
-        if (jedisUtil.isKey(token)) {
+        if (redisUtil.hasKey(token)) {
             //有效--读取Redis中的用户信息
-            String json = jedisUtil.getStr(token);
+            String json = (String) redisUtil.get(token);
             //重新设置时间
-            jedisUtil.expire(token, TimeUnit.MINUTES, 30);
+            redisUtil.expire(token, 30*60);
             return new R(0, "OK", JSON.parseObject(json, Author.class));
         } else {
-            return R.error();
+            return new R(0, "token已失效", null);
         }
     }
 
@@ -79,7 +98,7 @@ public class AuthorServiceimpl implements AuthorService {
     @Override
     public R loginOut(String token) {
         //删除Redis
-        jedisUtil.delKey(token);
+        redisUtil.del(token);
         return R.ok();
     }
 }

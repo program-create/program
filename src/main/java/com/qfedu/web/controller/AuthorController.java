@@ -1,6 +1,10 @@
 package com.qfedu.web.controller;
 
+import com.qfedu.common.redis.JedisUtil;
+import com.qfedu.common.redis.RedisUtil;
+import com.qfedu.common.util.ALiYunNote;
 import com.qfedu.common.util.CookieUtil;
+import com.qfedu.common.util.TokenTool;
 import com.qfedu.common.vo.R;
 import com.qfedu.pojo.Author;
 import com.qfedu.service.AuthorService;
@@ -11,52 +15,49 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class AuthorController {
 
     @Autowired
     private AuthorService authorService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     //作者注册
     @RequestMapping("/authorsave.do")
     @ResponseBody
-    public R save(Author author) {
+    public R save(Author author,Integer args) {
         System.out.println("注册信息》》》》："+ author);
-        return authorService.save(author);
+        return authorService.save(author,args);
+    }
+
+    //阿里云短信验证
+    @RequestMapping("/aliyunnote.do")
+    @ResponseBody
+    public R note(Author author) {
+        //创建阿里云短信工具类对象
+        ALiYunNote aLiYun = new ALiYunNote();
+        //调用阿里云短信服务
+        int args = aLiYun.aLiYunNote(author.getPhone());
+        //将生成的验证码存入Redis中
+        redisUtil.set(author.getPhone(),args, 5*60);
+        return R.ok();
     }
 
     //作者登陆
     @RequestMapping("/authorlogin.do")
     @ResponseBody
-    public R authorLogin(String nickname, String password, HttpServletRequest request, HttpServletResponse responsep) {
-        //查看token是否存在
-        String token = CookieUtil.getCk(request,"author");
-        if (token != null) {
-            //登陆
-            R r = authorService.authorLogin(nickname, password);
-            if (r.getCode() == 0) {
-                //登录成功，需要将令牌存储到Cookie
-                CookieUtil.setCK(responsep, "author", r.getData().toString());
-            }
-            return r;
-        } else {
-            //检查token是否过期
-            return authorService.loginCheck(token);
-        }
+    public R authorLogin(String nickname, String password,HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("用户名："+nickname);
+        return authorService.authorLogin(nickname, password, response);
     }
 
     //单点登陆检查
     @RequestMapping("/ssologinAuthor.do")
     public R logigcheck( HttpServletRequest request){
-        //查看token是否存在
-        String token=CookieUtil.getCk(request,"userauth");
-        if(token!=null) {
-            //重置token时间并返回用户信息
-            return authorService.loginCheck(token);
-        }else {
-            return R.error();
-        }
+        return authorService.loginCheck(TokenTool.getToken(request));
     }
 
 
