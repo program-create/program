@@ -24,16 +24,16 @@ public interface BookMapper {
     Book selectByName(String bookname);
 
     //根据类型查询某一类图书
-    List<Map<String ,Object>> selectByType(@Param("typeid1") int typeid1);
+    List<Map<String ,Object>> selectByType(@Param("typeid") int typeid ,@Param("index") int index);
 
     //根据风格查询查询某一类图书
-    List<Map<String ,Object>> selectByTagOne(int TagOne);
+    List<Map<String ,Object>> selectByTagOne(@Param("styleid") int styleid ,@Param("index") int inde);
 
     //根据流派查询查询某一类图书
-    PageVo<Book> selectByTagTwo(int TagTwo);
+    List<Map<String ,Object>> selectByTagTwo(@Param("schoolsid") int schoolsid ,@Param("index") int inde);
 
     //根据元素查询查询某一类图书
-    PageVo<Book> selectByTagThree(int TagThree);
+    List<Map<String ,Object>> selectByTagThree(@Param("elementid") int elementid ,@Param("index") int inde);
 
     int updateMonthticket(@Param("bookid") int bookid ,@Param("monthticket") int monthticket);
 
