@@ -35,7 +35,9 @@ public interface BookMapper {
     //根据元素查询查询某一类图书
     PageVo<Book> selectByTagThree(int TagThree);
 
-    int updateMonthticket(int bookid,int monthticket);
+    int updateMonthticket(@Param("bookid") int bookid ,@Param("monthticket") int monthticket);
 
+    //查询一个图书的月票的数量
+    int selectMonthticket(int id);
 
 }

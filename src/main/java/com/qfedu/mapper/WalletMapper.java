@@ -1,6 +1,7 @@
 package com.qfedu.mapper;
 
 import com.qfedu.pojo.Wallet;
+import org.apache.ibatis.annotations.Param;
 
 public interface WalletMapper {
     int deleteByPrimaryKey (Integer id);
@@ -16,6 +17,9 @@ public interface WalletMapper {
     int updateByPrimaryKey (Wallet record);
 
     //赠送月票后减少月票
-    int updateMonthticket(int id,int monthticket);
+    int updateMonthticket(@Param("id") int id, @Param("monthticket") int monthticket);
+
+    //查询用户月票数量
+    int selectMonthticket(int uid);
 
 }

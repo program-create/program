@@ -3,18 +3,18 @@
 <mapper namespace="com.qfedu.mapper.MonthticketMapper" >
   <resultMap id="BaseResultMap" type="com.qfedu.pojo.Monthticket" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="bookid" property="bookid" jdbcType="INTERGER"></result>
+    <result column="bookid" property="bookid" jdbcType="INTEGER"></result>
     <result column="votetime" property="votetime" jdbcType="TIMESTAMP" />
     <result column="votenum" property="votenum" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, votetime, votenum, uid
+    id,bookid, votetime, votenum, uid
   </sql>
 
-<insert id="insertMonthticket" parameterType="com.qfedu.pojo.Monthticket">
-  insert into t_monthticket <include refid="Base_Column_List" />
-  values (null,now(),#{votenum},#{uid})
+<insert id="insertMonthticket" >
+  insert into t_monthticket (id ,bookid,votetime,votenum,uid )
+  values (null,#{bookid},now(),#{votenum},#{uid})
 </insert>
 
 </mapper>

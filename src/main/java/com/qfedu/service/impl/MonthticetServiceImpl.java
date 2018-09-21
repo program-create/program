@@ -23,18 +23,29 @@ public class MonthticetServiceImpl implements MonthticketService {
 
 
     @Override
-    public boolean saveMonthticket(Monthticket monthticket) {
-        Book book = new Book();
-        Wallet wallet= new Wallet();
+    public boolean saveMonthticket(int bookid, int votename, int uid) {
 
-        int addnum = book.getMonthticket() + monthticket.getVotenum();
-        bookMapper.updateMonthticket(monthticket.getBookid(),addnum);
-        if (wallet.getMonthticket() > monthticket.getVotenum()) {
-            int delnum = wallet.getMonthticket() - monthticket.getVotenum();
-            walletMapper.updateMonthticket(monthticket.getUid(), monthticket.getVotenum());
+        if (monthticketMapper.insertMonthticket(bookid, votename, uid) > 0) {
+
+
+            int addnum = bookMapper.selectMonthticket(bookid) + votename;
+
+            System.out.println(addnum);
+            System.out.println(votename);
+
+            bookMapper.updateMonthticket(bookid, addnum);
+            System.out.println("哈哈" + bookMapper.updateMonthticket(bookid, addnum));
+            if (walletMapper.selectMonthticket(uid) > votename) {
+                int delnum = walletMapper.selectMonthticket(uid) - votename;
+                System.out.println(delnum);
+                walletMapper.updateMonthticket(uid, delnum);
+            }
+
+            return true;
+        }  else {
+
+            return false;
         }
 
-
-        return monthticketMapper.insertMonthticket(monthticket) > 0;
     }
 }

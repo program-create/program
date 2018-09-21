@@ -6,11 +6,9 @@
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="money" property="money" jdbcType="INTEGER" />
     <result column="monthticket" property="monthticket" jdbcType="INTEGER" />
-    <result column="recharge" property="recharge" jdbcType="INTEGER" />
-    <result column="rechargetime" property="rechargetime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, uid, money, monthticket, recharge, rechargetime
+    id, uid, money, monthticket
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,10 +24,8 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_wallet (uid, money, monthticket, 
-      recharge, rechargetime)
-    values (#{uid,jdbcType=INTEGER}, #{money,jdbcType=INTEGER}, #{monthticket,jdbcType=INTEGER}, 
-      #{recharge,jdbcType=INTEGER}, #{rechargetime,jdbcType=TIMESTAMP})
+    insert into t_wallet (uid, money, monthticket)
+    values (#{uid,jdbcType=INTEGER}, #{money,jdbcType=INTEGER}, #{monthticket,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Wallet" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -46,12 +42,7 @@
       <if test="monthticket != null" >
         monthticket,
       </if>
-      <if test="recharge != null" >
-        recharge,
-      </if>
-      <if test="rechargetime != null" >
-        rechargetime,
-      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="uid != null" >
@@ -63,12 +54,7 @@
       <if test="monthticket != null" >
         #{monthticket,jdbcType=INTEGER},
       </if>
-      <if test="recharge != null" >
-        #{recharge,jdbcType=INTEGER},
-      </if>
-      <if test="rechargetime != null" >
-        #{rechargetime,jdbcType=TIMESTAMP},
-      </if>
+
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Wallet" >
@@ -83,12 +69,7 @@
       <if test="monthticket != null" >
         monthticket = #{monthticket,jdbcType=INTEGER},
       </if>
-      <if test="recharge != null" >
-        recharge = #{recharge,jdbcType=INTEGER},
-      </if>
-      <if test="rechargetime != null" >
-        rechargetime = #{rechargetime,jdbcType=TIMESTAMP},
-      </if>
+
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -97,12 +78,15 @@
     set uid = #{uid,jdbcType=INTEGER},
       money = #{money,jdbcType=INTEGER},
       monthticket = #{monthticket,jdbcType=INTEGER},
-      recharge = #{recharge,jdbcType=INTEGER},
-      rechargetime = #{rechargetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateMonthticket" parameterType="java.lang.Integer">
-    update t_wallet set monthticket=#{monthticket} where SET
+    update t_wallet set monthticket=#{monthticket} where
     uid = #{id}
   </update>
+
+
+  <select id="selectMonthticket" resultType="java.lang.Integer">
+    select  monthticket from t_wallet where uid=#{uid}
+  </select>
 </mapper>

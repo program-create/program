@@ -11,10 +11,6 @@ public class Wallet {
 
     private Integer monthticket;
 
-    private Integer recharge;
-
-    private Date rechargetime;
-
     public Integer getId() {
         return id;
     }
@@ -47,19 +43,4 @@ public class Wallet {
         this.monthticket = monthticket;
     }
 
-    public Integer getRecharge() {
-        return recharge;
-    }
-
-    public void setRecharge(Integer recharge) {
-        this.recharge = recharge;
-    }
-
-    public Date getRechargetime() {
-        return rechargetime;
-    }
-
-    public void setRechargetime(Date rechargetime) {
-        this.rechargetime = rechargetime;
-    }
 }

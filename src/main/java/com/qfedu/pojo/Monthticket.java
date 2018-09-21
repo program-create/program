@@ -54,4 +54,15 @@ public class Monthticket {
     public void setUid(Integer uid) {
         this.uid = uid;
     }
+
+    @Override
+    public String toString() {
+        return "Monthticket{" +
+                "id=" + id +
+                ", bookid=" + bookid +
+                ", votetime=" + votetime +
+                ", votenum=" + votenum +
+                ", uid=" + uid +
+                '}';
+    }
 }
