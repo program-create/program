@@ -18,4 +18,7 @@ public interface AuthorMapper {
     //通过作者名修改密码--忘记密码 第三步
     int updateByNickName(@Param("nickname") String nickname, @Param("password") String password);
 
+    //通过作者ID修改作者头像
+    int updateHeadimg(Author author);
+
 }

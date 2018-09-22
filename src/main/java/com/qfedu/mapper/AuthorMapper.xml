@@ -36,4 +36,8 @@
     <update id="updateByNickName" parameterType="com.qfedu.pojo.Author">
         update t_author set password=#{password}  where nickname=#{nickname}
     </update>
+  <!--通过作者ID修改作者表头像-->
+  <update id="updateHeadimg" parameterType="com.qfedu.pojo.Author" >
+        update t_author set headimg=#{headimg} where id=#{id}
+    </update>
 </mapper>

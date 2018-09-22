@@ -11,9 +11,12 @@ import com.qfedu.pojo.Author;
 import com.qfedu.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.Objects;
 
 @Service
@@ -149,6 +152,30 @@ public class AuthorServiceimpl implements AuthorService {
     public R updatePassword3(String nickname, String password) {
         if (authorMapper.updateByNickName(nickname, ShiroEncryUtil.md5(password)) > 0) {
             return R.ok();
+        }
+        return R.error();
+    }
+
+    //通过作者ID修改作者头像
+    @Override
+    public R updateHeadimg(String headimg, HttpServletRequest request) {
+        //获取token
+        String token = TokenTool.getToken(request);
+        if (token != null) {
+            System.out.println(1);
+            //从获取Redis用户信息
+            Author author = (Author) redisUtil.get(token);
+            if (author != null) {
+                System.out.println(2);
+                author.setHeadimg(headimg);
+                if (authorMapper.updateHeadimg(author) > 0  ) {
+                    //用户最新信息存入Redis并刷新令牌时间
+                    redisUtil.set(token, authorMapper.queryByNickName(author.getNickname()), 30 * 60);
+                    return R.ok();
+                }
+                return R.error();
+            }
+            return new R(1, "令牌失效", null);
         }
         return R.error();
     }

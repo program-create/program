@@ -30,4 +30,7 @@ public interface AuthorService {
 
     //作者密码重置--忘记密码 第三步
     R updatePassword3(String nickname, String password);
+
+    //通过作者ID修改作者头像
+    R updateHeadimg(String headimg, HttpServletRequest request);
 }
