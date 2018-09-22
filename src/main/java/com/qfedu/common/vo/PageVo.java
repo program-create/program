@@ -1,12 +1,13 @@
 package com.qfedu.common.vo;
 
 import java.util.List;
+import java.util.Map;
 
 public class PageVo<T> {
     private int code;
     private String msg;
     private int count;
-    private List<T> data;
+    private List<Map<String,Object>> data;
 
     public int getCode() {
         return code;
@@ -32,16 +33,15 @@ public class PageVo<T> {
         this.count = count;
     }
 
-    public List<T> getData() {
+    public List<Map<String, Object>> getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(List<Map<String, Object>> data) {
         this.data = data;
     }
 
-
-    public static <T> PageVo<T> createPage(List<T> data, int count){
+    public static <T> PageVo<T> createPage(List<Map<String,Object>> data, int count){
         PageVo<T> pageVo=new PageVo<>();
         pageVo.setCode(0);
         pageVo.setMsg("OK");

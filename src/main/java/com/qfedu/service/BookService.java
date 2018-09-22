@@ -1,10 +1,8 @@
 package com.qfedu.service;
 
+import com.qfedu.common.vo.PageVo;
 import com.qfedu.common.vo.R;
 import com.qfedu.pojo.Book;
-
-import java.util.List;
-import java.util.Map;
 
 public interface BookService {
 
@@ -16,8 +14,12 @@ public interface BookService {
 
     Book queryBookById(Integer id);
 
-    List<Map<String ,  Object>> queryBookByType(int typeid);
+    PageVo queryBookByType(int typeid, int page,int pagenum);
 
-    List<Map<String ,  Object>> queryBookByTagOne(int typeid);
+    PageVo queryBookByTagOne(int styleid , int page,int pagenum);
+
+    PageVo queryBookByTagTwo(int schoolsid , int page,int pagenum);
+
+    PageVo queryBookByTagThree(int elementid , int page,int pagenum);
 
 }

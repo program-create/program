@@ -1,7 +1,7 @@
 package com.qfedu.web.controller;
 
+import com.qfedu.common.vo.PageVo;
 import com.qfedu.common.vo.R;
-import com.qfedu.common.vo.RList;
 import com.qfedu.pojo.Author;
 import com.qfedu.pojo.Book;
 import com.qfedu.service.BookService;
@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class BookController {
@@ -48,7 +44,6 @@ public class BookController {
     public R querybookbyname(String bookname) {
 
         System.out.println(bookname);
-
 
         R r=new R();
         Book book = bookService.queryBookByName(bookname);
@@ -88,45 +83,69 @@ public class BookController {
         }
     }
 
+    //根据图书类型查询图书
     @RequestMapping("querybookbytype.do")
     @ResponseBody
-    public RList querybookbytype( int typeid) {
-        List<Map<String,Object>> mapList = bookService.queryBookByType(typeid);
+    public PageVo querybookbytype( int typeid ,int page, int pagenum) {
 
-        RList r = new RList();
-        if (mapList.size() > 0) {
-            r.setCode(1001);
-            r.setMsg("查询成功");
-            r.setDatas(mapList);
+        PageVo pageVo = new PageVo();
 
-            return r;
-        }  else {
-            r.setCode(1002);
-            r.setMsg("查询失败");
-            r.setDatas(mapList);
-            return r;
+        if (bookService.queryBookByType(typeid, page, pagenum).getData().size() > 0) {
+
+            return bookService.queryBookByType(typeid, page, pagenum);
+        } else {
+            pageVo.setCode(1);
+            pageVo.setMsg("查询不到结果");
+            return pageVo;
         }
     }
 
-    @RequestMapping("querybookbytagone.do")
+    @RequestMapping("querybookbystyle.do")
     @ResponseBody
-    public RList querybookbytagone( int typeid) {
-        List<Map<String,Object>> mapList = bookService.queryBookByTagOne(typeid);
+    public PageVo querybookbystyle( int styleid ,int page, int pagenum) {
 
-        RList r = new RList();
-        if (mapList.size() > 0) {
-            r.setCode(1001);
-            r.setMsg("查询成功");
-            r.setDatas(mapList);
+        PageVo pageVo = new PageVo();
 
-            return r;
-        }  else {
-            r.setCode(1002);
-            r.setMsg("查询失败");
-            r.setDatas(mapList);
-            return r;
+        if (bookService.queryBookByTagOne(styleid, page, pagenum).getData().size() > 0) {
+
+            return bookService.queryBookByType(styleid, page, pagenum);
+        } else {
+            pageVo.setCode(1);
+            pageVo.setMsg("查询不到结果");
+            return pageVo;
         }
     }
 
+    @RequestMapping("querybookbyschools.do")
+    @ResponseBody
+    public PageVo querybookbyschools( int schoolsid ,int page, int pagenum) {
+
+        PageVo pageVo = new PageVo();
+
+        if (bookService.queryBookByTagTwo(schoolsid, page, pagenum).getData().size() > 0) {
+
+            return bookService.queryBookByType(schoolsid, page, pagenum);
+        } else {
+            pageVo.setCode(1);
+            pageVo.setMsg("查询不到结果");
+            return pageVo;
+        }
+    }
+
+    @RequestMapping("querybookbyelement.do")
+    @ResponseBody
+    public PageVo querybookbyelement( int elementid ,int page, int pagenum) {
+
+        PageVo pageVo = new PageVo();
+
+        if (bookService.queryBookByTagThree(elementid, page, pagenum).getData().size() > 0) {
+
+            return bookService.queryBookByType(elementid, page, pagenum);
+        } else {
+            pageVo.setCode(1);
+            pageVo.setMsg("查询不到结果");
+            return pageVo;
+        }
+    }
 
 }
