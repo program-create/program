@@ -5,12 +5,13 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="bookid" property="bookid" jdbcType="INTEGER" />
     <result column="chaptername" property="chaptername" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.qfedu.pojo.Chapter" extends="BaseResultMap" >
     <result column="chaptercontent" property="chaptercontent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, bookid, chaptername
+    id, bookid, chaptername, flag
   </sql>
   <sql id="Blob_Column_List" >
     chaptercontent
@@ -31,10 +32,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_chapter (bookid, chaptername, chaptercontent
-      )
-    values (#{bookid,jdbcType=INTEGER}, #{chaptername,jdbcType=VARCHAR}, #{chaptercontent,jdbcType=LONGVARCHAR}
-      )
+    insert into t_chapter (bookid, chaptername, flag, 
+      chaptercontent)
+    values (#{bookid,jdbcType=INTEGER}, #{chaptername,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, 
+      #{chaptercontent,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Chapter" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -48,6 +49,9 @@
       <if test="chaptername != null" >
         chaptername,
       </if>
+      <if test="flag != null" >
+        flag,
+      </if>
       <if test="chaptercontent != null" >
         chaptercontent,
       </if>
@@ -58,6 +62,9 @@
       </if>
       <if test="chaptername != null" >
         #{chaptername,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
       </if>
       <if test="chaptercontent != null" >
         #{chaptercontent,jdbcType=LONGVARCHAR},
@@ -73,6 +80,9 @@
       <if test="chaptername != null" >
         chaptername = #{chaptername,jdbcType=VARCHAR},
       </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
       <if test="chaptercontent != null" >
         chaptercontent = #{chaptercontent,jdbcType=LONGVARCHAR},
       </if>
@@ -83,17 +93,21 @@
     update t_chapter
     set bookid = #{bookid,jdbcType=INTEGER},
       chaptername = #{chaptername,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
       chaptercontent = #{chaptercontent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Chapter" >
     update t_chapter
     set bookid = #{bookid,jdbcType=INTEGER},
-      chaptername = #{chaptername,jdbcType=VARCHAR}
+      chaptername = #{chaptername,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
+  
+  <!--最新章节数-->
   <select id="selectMax" resultType="int">
     select MAX(id) from t_chapter GROUP BY bookid HAVING bookid=#{bookid}
   </select>
+
 </mapper>

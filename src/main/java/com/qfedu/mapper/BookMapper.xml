@@ -9,34 +9,25 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="expense" property="expense" jdbcType="VARCHAR" />
     <result column="wordnum" property="wordnum" jdbcType="INTEGER" />
+    <result column="monthticket" property="monthticket" jdbcType="INTEGER"></result>
     <result column="flag" property="flag" jdbcType="INTEGER" />
     <result column="info" property="info" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, auid, typeid, status, expense, wordnum,flag, info
+    id, name, auid, typeid, status, expense, wordnum,monthticket,flag, info
   </sql>
   <select id="selectByPrimaryKey" resultMap="BookDetail" parameterType="java.lang.Integer" >
-    select book.* , author.nickname as authorname ,img.bookimg ,ty.name as typename from t_book book
+    select book.* , author.* ,img.bookimages as images,ty.name as typename from t_book book
     left join  t_author author on book.auid = author.id
     left join t_bookimg img on img.bookid = book.id
     left join t_type ty on ty.id = book.typeid
-    where id = #{id}
+    where book.id = #{id}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_book
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.qfedu.pojo.Book" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_book (name, auid, typeid, 
-      status, expense,
-      wordnum, flag,info)
-    values (#{name,jdbcType=VARCHAR}, #{auid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, 
-      #{status,jdbcType=VARCHAR},  #{expense,jdbcType=VARCHAR},
-      #{wordnum,jdbcType=INTEGER},#{flag,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR})
-  </insert>
+
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Book" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
@@ -59,6 +50,9 @@
         expense,
       </if>
       <if test="wordnum != null" >
+        wordnum,
+      </if>
+      <if test="monthticket!= null" >
         wordnum,
       </if>
       <if test="flag != null" >
@@ -86,6 +80,9 @@
       </if>
       <if test="wordnum != null" >
         #{wordnum,jdbcType=INTEGER},
+      </if>
+      <if test="monthticket != null" >
+        #{monthticket,jdbcType=INTEGER},
       </if>
       <if test="flag != null" >
         #{flag,jdbcType=INTEGER},
@@ -116,6 +113,9 @@
       <if test="wordnum != null" >
         wordnum = #{wordnum,jdbcType=INTEGER},
       </if>
+      <if test="monthticket != null" >
+        monthticket = #{monthticket,jdbcType=INTEGER},
+      </if>
       <if test="flag != null" >
         #{flag,jdbcType=INTEGER},
       </if>
@@ -133,6 +133,7 @@
       status = #{status,jdbcType=VARCHAR},
       expense = #{expense,jdbcType=VARCHAR},
       wordnum = #{wordnum,jdbcType=INTEGER},
+      monthticket = #{monthticket,jdbcType=INTEGER},
       flag = #{flag,jdbcType=INTEGER},
       info = #{info,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -149,33 +150,124 @@
     <result column="info" property="info" jdbcType="VARCHAR" />
     <association property="author" javaType="com.qfedu.pojo.Author">
       <id column="auid" property="id" jdbcType="INTEGER"></id>
-      <result property="nickname" column="authorname"  jdbcType="VARCHAR"></result>
       <result column="nickname" property="nickname" jdbcType="VARCHAR" />
-      <result column="password" property="password" jdbcType="VARCHAR" />
-      <result column="phone" property="phone" jdbcType="VARCHAR" />
-      <result column="flag" property="flag" jdbcType="INTEGER" />
-      <result column="createtime" property="createtime" jdbcType="DATE" />
-      <result column="email" property="email" jdbcType="VARCHAR" />
-      <result column="qqnumber" property="qqnumber" jdbcType="INTEGER" />
-      <result column="headimg" property="headimg" jdbcType="VARCHAR" />
     </association>
     <collection property="bookimg" ofType="com.qfedu.pojo.Bookimg" >
       <id column="bookimgid" property="id" jdbcType="INTEGER"></id>
       <result property="bookimages" column="images" jdbcType="VARCHAR"></result>
-      <result column="bookid" property="bookid" javaType="INTEGER"></result>
     </collection>
     <collection property="type" ofType="com.qfedu.pojo.Type">
       <id column="typeid" property="id" jdbcType="INTEGER"></id>
-      <result property="name" column="typename"></result>
+      <result column="typename" property="name"  jdbcType="VARCHAR"></result>
     </collection>
   </resultMap>
-  <select id="selectByName" resultMap="BookDetail" >
-    select book.* , author.* ,img.images ,ty.* from t_book book
+  <!-- 根据书名查询图书详情 -->
+  <select id="selectByName" resultType="java.util.HashMap" >
+    select book.* , author.nickname as author ,img.bookimages ,
+    ty.name as typename , style.name as stylename ,sch.name as schoolsname, ele.name as elementname from t_book book
     left join  t_author author on book.auid = author.id
     left join t_bookimg img on img.bookid = book.id
     left join t_type ty on ty.id = book.typeid
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_style style on style.id = booktag.styleid
+    left join t_schools sch on sch.id = booktag.schoolsid
+    left join t_element ele on ele.id = booktag.elementid
     where book.name = #{bookname}
   </select>
-  <!--分类查询-->
+  <!-- 根据图书类型type查询图书 -->
+  <select id="selectByType" resultType="java.util.HashMap" >
+    select book.name as bookname,author.nickname as author, ty.name as typename,book.status,
+    book.wordnum,book.info ,img.bookimages , book.monthticket,
+	 style.name as stylename ,sch.name as schoolsname, ele.name as elementname	from t_book book
+    left join t_author author on book.auid = author.id
+    left join t_bookimg img on book.id = img.bookid
+    left join t_type ty on ty.id= book.typeid
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_style style on style.id = booktag.styleid
+    left join t_schools sch on sch.id = booktag.schoolsid
+    left join t_element ele on ele.id = booktag.elementid
+    where book.typeid = #{typeid} limit #{index} , #{page}
+  </select>
+
+  <select id="selectcounttype" resultType="java.lang.Integer">
+    select count(*) from t_book where typeid=#{typeid}
+  </select>
+
+  <!-- 根据图书风格查询图书 -->
+  <select id="selectByTagOne" resultType="java.util.HashMap" >
+    select book.name as bookname,author.nickname as author,book.monthticket, ty.name as typename,book.status,
+    book.wordnum,book.info ,img.bookimages style.name as stylename ,sch.name as schoolsname,
+     ele.name as elementname from t_book book
+    left join t_author author on book.auid = author.id
+    left join t_bookimg img on book.id = img.bookid
+    left join t_type ty on ty.id= book.typeid
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_style style on style.id = booktag.styleid
+    left join t_schools sch on sch.id = booktag.schoolsid
+    left join t_element ele on ele.id = booktag.elementid
+    where style.id = #{styleid} limit #{index} , 20
+  </select>
+
+  <!-- 根据图书流派查询图书 -->
+  <select id="selectByTagTwo" resultType="java.util.HashMap" >
+    select book.name as bookname,author.nickname as author,book.monthticket, ty.name as typename,book.status,
+    book.wordnum,book.info ,img.bookimages style.name as stylename ,sch.name as schoolsname,
+     ele.name as elementname from t_book book
+    left join t_author author on book.auid = author.id
+    left join t_bookimg img on book.id = img.bookid
+    left join t_type ty on ty.id= book.typeid
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_style style on style.id = booktag.styleid
+    left join t_schools sch on sch.id = booktag.schoolsid
+    left join t_element ele on ele.id = booktag.elementid
+    where sch.id = #{schoolsid} limit #{index} , 20
+  </select>
+
+  <!-- 根据图书元素查询图书 -->
+  <select id="selectByTagThree" resultType="java.util.HashMap" >
+    select book.name as bookname,author.nickname as author,book.monthticket, ty.name as typename,book.status,
+    book.wordnum,book.info ,img.bookimages style.name as stylename ,sch.name as schoolsname,
+     ele.name as elementname from t_book book
+    left join t_author author on book.auid = author.id
+    left join t_bookimg img on book.id = img.bookid
+    left join t_type ty on ty.id= book.typeid
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_style style on style.id = booktag.styleid
+    left join t_schools sch on sch.id = booktag.schoolsid
+    left join t_element ele on ele.id = booktag.elementid
+    where ele.id = #{elementid} limit #{index} , 20
+  </select>
+
+  <select id="selectcountstyle" resultType="java.lang.Integer">
+    select count(*) from t_book book
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_style style on style.id = booktag.styleid
+    where style.id = #{styleid}
+  </select>
+
+  <select id="selectcountschools" resultType="java.lang.Integer">
+    select count(*) from t_book book
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_schools sch on sch.id = booktag.schoolsid
+    where sch.id = #{schoolsid}
+  </select>
+
+  <select id="selectcountelement" resultType="java.lang.Integer">
+    select count(*) from t_book book
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_element ele on ele.id = booktag.elementid
+    where ele.id = #{elementid}
+  </select>
+
+  <update id="updateMonthticket" parameterType="java.lang.Integer">
+    update t_book set monthticket = #{monthticket}
+    where id = #{bookid}
+  </update>
+
+
+  <select id="selectMonthticket" resultType="java.lang.Integer" >
+    select monthticket from t_book where id = #{id}
+  </select>
+
 
 </mapper>

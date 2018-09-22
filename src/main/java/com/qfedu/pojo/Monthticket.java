@@ -1,15 +1,24 @@
 package com.qfedu.pojo;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 
 public class Monthticket {
     private Integer id;
 
-    private Integer numbers;
+    private Integer bookid;
 
     private Date votetime;
 
-    private Integer bookid;
+    public Integer getBookid() {
+        return bookid;
+    }
+
+    public void setBookid(Integer bookid) {
+        this.bookid = bookid;
+    }
+
+    private Integer votenum;
 
     private Integer uid;
 
@@ -21,13 +30,6 @@ public class Monthticket {
         this.id = id;
     }
 
-    public Integer getNumbers() {
-        return numbers;
-    }
-
-    public void setNumbers(Integer numbers) {
-        this.numbers = numbers;
-    }
 
     public Date getVotetime() {
         return votetime;
@@ -37,12 +39,12 @@ public class Monthticket {
         this.votetime = votetime;
     }
 
-    public Integer getBookid() {
-        return bookid;
+    public Integer getVotenum() {
+        return votenum;
     }
 
-    public void setBookid(Integer bookid) {
-        this.bookid = bookid;
+    public void setVotenum(Integer votenum) {
+        this.votenum = votenum;
     }
 
     public Integer getUid() {
@@ -51,5 +53,16 @@ public class Monthticket {
 
     public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return "Monthticket{" +
+                "id=" + id +
+                ", bookid=" + bookid +
+                ", votetime=" + votetime +
+                ", votenum=" + votenum +
+                ", uid=" + uid +
+                '}';
     }
 }

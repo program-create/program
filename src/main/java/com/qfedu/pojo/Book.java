@@ -17,6 +17,16 @@ public class Book {
 
     private Integer wordnum;
 
+    private Integer monthticket;
+
+    public Integer getMonthticket() {
+        return monthticket;
+    }
+
+    public void setMonthticket(Integer monthticket) {
+        this.monthticket = monthticket;
+    }
+
     private int flag;
 
     public List<Bookimg> getBookimg() {

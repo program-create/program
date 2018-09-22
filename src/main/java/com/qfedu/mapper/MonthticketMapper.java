@@ -1,17 +1,11 @@
 package com.qfedu.mapper;
 
-import com.qfedu.pojo.Monthticket;
+import org.apache.ibatis.annotations.Param;
 
 public interface MonthticketMapper {
-    int deleteByPrimaryKey (Integer id);
 
-    int insert (Monthticket record);
+    //插入一条投票记录
+    int insertMonthticket(@Param("bookid") int bookid,@Param("votenum") int votename, @Param("uid") int uid);
 
-    int insertSelective (Monthticket record);
 
-    Monthticket selectByPrimaryKey (Integer id);
-
-    int updateByPrimaryKeySelective (Monthticket record);
-
-    int updateByPrimaryKey (Monthticket record);
 }

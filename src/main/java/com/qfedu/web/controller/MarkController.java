@@ -24,8 +24,14 @@ public class MarkController {
     //保存我的书架
     @RequestMapping("/savemark.do")
     @ResponseBody
-    public R saveMark(Mark mark){
-        return  markService.save(mark);
+    public R saveMark(Mark mark,HttpServletRequest request){
+        String token = TokenTool.getToken(request);
+        if (token!=null&&token.length()>0){
+            User user = (User) redisUtil.get(token);
+            mark.setUid(user.getId());
+            return  markService.save(mark);
+        }
+        return R.error();
     }
 
     //展示我的书签

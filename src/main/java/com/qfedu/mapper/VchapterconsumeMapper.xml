@@ -1,100 +1,93 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.qfedu.mapper.WalletMapper" >
-  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Wallet" >
+<mapper namespace="com.qfedu.mapper.VchapterconsumeMapper" >
+  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Vchapterconsume" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="chapteid" property="chapteid" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="money" property="money" jdbcType="INTEGER" />
-    <result column="monthticket" property="monthticket" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, uid, money, monthticket
+    id, chapteid, uid, money, createtime
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from t_wallet
+    from t_vchapterconsume
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_wallet
+    delete from t_vchapterconsume
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.qfedu.pojo.Wallet" >
+  <insert id="insert" parameterType="com.qfedu.pojo.Vchapterconsume" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_wallet (uid, money, monthticket)
-    values (#{uid,jdbcType=INTEGER}, #{money,jdbcType=INTEGER}, #{monthticket,jdbcType=INTEGER})
+    insert into t_vchapterconsume (chapteid, uid, money, 
+      createtime)
+    values (#{chapteid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{money,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.qfedu.pojo.Wallet" >
+  <insert id="insertSelective" parameterType="com.qfedu.pojo.Vchapterconsume" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_wallet
+    insert into t_vchapterconsume
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="chapteid != null" >
+        chapteid,
+      </if>
       <if test="uid != null" >
         uid,
       </if>
       <if test="money != null" >
         money,
       </if>
-      <if test="monthticket != null" >
-        monthticket,
+      <if test="createtime != null" >
+        createtime,
       </if>
-
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="chapteid != null" >
+        #{chapteid,jdbcType=INTEGER},
+      </if>
       <if test="uid != null" >
         #{uid,jdbcType=INTEGER},
       </if>
       <if test="money != null" >
         #{money,jdbcType=INTEGER},
       </if>
-      <if test="monthticket != null" >
-        #{monthticket,jdbcType=INTEGER},
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
       </if>
-
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Wallet" >
-    update t_wallet
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Vchapterconsume" >
+    update t_vchapterconsume
     <set >
+      <if test="chapteid != null" >
+        chapteid = #{chapteid,jdbcType=INTEGER},
+      </if>
       <if test="uid != null" >
         uid = #{uid,jdbcType=INTEGER},
       </if>
       <if test="money != null" >
         money = #{money,jdbcType=INTEGER},
       </if>
-      <if test="monthticket != null" >
-        monthticket = #{monthticket,jdbcType=INTEGER},
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
       </if>
-
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Wallet" >
-    update t_wallet
-    set uid = #{uid,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Vchapterconsume" >
+    update t_vchapterconsume
+    set chapteid = #{chapteid,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=INTEGER},
       money = #{money,jdbcType=INTEGER},
-      monthticket = #{monthticket,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-  <update id="updateMonthticket" parameterType="java.lang.Integer">
-    update t_wallet set monthticket=#{monthticket} where
-    uid = #{id}
-  </update>
-  <select id="selectMonthticket" resultType="java.lang.Integer">
-    select  monthticket from t_wallet where uid=#{uid}
-  </select>
-
-  <select id="selectByUid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select
-    <include refid="Base_Column_List" />
-    from t_wallet where uid = #{uid}
-  </select>
-
-
 </mapper>

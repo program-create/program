@@ -15,12 +15,12 @@ public class Bookimg {
         this.id = id;
     }
 
-    public String getBookimg() {
+    public String getBookimages() {
         return bookimages;
     }
 
-    public void setBookimg(String bookimg) {
-        this.bookimages = bookimg == null ? null : bookimages.trim();
+    public void setBookimages(String bookimages) {
+        this.bookimages = bookimages;
     }
 
     public Integer getBookid() {
