@@ -1,13 +1,17 @@
 package com.qfedu.pojo;
 
-public class Wallet {
+import java.util.Date;
+
+public class Vchapterconsume {
     private Integer id;
+
+    private Integer chapteid;
 
     private Integer uid;
 
     private Integer money;
 
-    private Integer monthticket;
+    private Date createtime;
 
     public Integer getId() {
         return id;
@@ -15,6 +19,14 @@ public class Wallet {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getChapteid() {
+        return chapteid;
+    }
+
+    public void setChapteid(Integer chapteid) {
+        this.chapteid = chapteid;
     }
 
     public Integer getUid() {
@@ -33,12 +45,11 @@ public class Wallet {
         this.money = money;
     }
 
-    public Integer getMonthticket() {
-        return monthticket;
+    public Date getCreatetime() {
+        return createtime;
     }
 
-    public void setMonthticket(Integer monthticket) {
-        this.monthticket = monthticket;
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
-
 }

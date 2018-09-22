@@ -136,7 +136,7 @@ public class UserController {
         return service.updatePass(password, oripass, user.getId());
     }
 
-    //    9.签到状态
+    //    9.清除签到状态
     @RequestMapping("delSignFlag.do")
     public void delSignFlag(){
         try {

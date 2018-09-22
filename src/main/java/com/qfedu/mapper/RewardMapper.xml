@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qfedu.mapper.RewardMapper" >
+  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Reward" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bookid" property="bookid" jdbcType="INTEGER" />
+    <result column="propid" property="propid" jdbcType="INTEGER" />
+    <result column="propnum" property="propnum" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, bookid, propid, propnum, money, createtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_reward
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_reward
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qfedu.pojo.Reward" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_reward (bookid, propid, propnum, 
+      money, createtime)
+    values (#{bookid,jdbcType=INTEGER}, #{propid,jdbcType=INTEGER}, #{propnum,jdbcType=INTEGER}, 
+      #{money,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qfedu.pojo.Reward" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_reward
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookid != null" >
+        bookid,
+      </if>
+      <if test="propid != null" >
+        propid,
+      </if>
+      <if test="propnum != null" >
+        propnum,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookid != null" >
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="propid != null" >
+        #{propid,jdbcType=INTEGER},
+      </if>
+      <if test="propnum != null" >
+        #{propnum,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Reward" >
+    update t_reward
+    <set >
+      <if test="bookid != null" >
+        bookid = #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="propid != null" >
+        propid = #{propid,jdbcType=INTEGER},
+      </if>
+      <if test="propnum != null" >
+        propnum = #{propnum,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Reward" >
+    update t_reward
+    set bookid = #{bookid,jdbcType=INTEGER},
+      propid = #{propid,jdbcType=INTEGER},
+      propnum = #{propnum,jdbcType=INTEGER},
+      money = #{money,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

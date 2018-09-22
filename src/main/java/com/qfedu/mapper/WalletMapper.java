@@ -22,4 +22,7 @@ public interface WalletMapper {
     //查询用户月票数量
     int selectMonthticket(int uid);
 
+//    我的钱包
+    Wallet selectByUid(int uid);
+
 }
