@@ -61,7 +61,7 @@ public class AuthorController {
     @RequestMapping("/ssologinauthor.do")
     @ResponseBody
     public R logigcheck( HttpServletRequest request){
-        return authorService.loginCheck(TokenTool.getToken(request));
+        return authorService.loginCheck(request);
     }
 
 

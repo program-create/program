@@ -20,7 +20,7 @@ public interface AuthorService {
     R authorLogin(String nickname, String password, HttpServletResponse response);
 
     //登陆时token已存在
-    R loginCheck(String token);
+    R loginCheck(HttpServletRequest request);
 
     //注销
     R loginOut(String token);

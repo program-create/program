@@ -110,17 +110,22 @@ public class AuthorServiceimpl implements AuthorService {
 
     //登陆时token已存在
     @Override
-    public R loginCheck(String token) {
-        //判断该token是否存在
-        if (redisUtil.hasKey(token)) {
-            //有效--读取Redis中的用户信息
-            String json = (String) redisUtil.get(token);
-            //重新设置时间
-            redisUtil.expire(token, 30*60);
-            return new R(0, "OK", JSON.parseObject(json, Author.class));
-        } else {
-            return new R(0, "token已失效", null);
+    public R loginCheck(HttpServletRequest request) {
+        //获取token
+        String token = TokenTool.getToken(request);
+        if (token != null & token.length() > 0) {
+            //判断该token是否存在
+            if (redisUtil.hasKey(token)) {
+                //有效--读取Redis中的用户信息
+                String json = (String) redisUtil.get(token);
+                //重新设置时间
+                redisUtil.expire(token, 30*60);
+                return new R(0, "OK", JSON.parseObject(json, Author.class));
+            } else {
+                return new R(0, "token已失效", null);
+            }
         }
+        return new R(0, "未登录", null);
     }
 
     //注销
