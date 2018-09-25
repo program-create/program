@@ -3,8 +3,7 @@ package com.qfedu.common.util;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 　　　Create   By   Mr.Han
- * 　                 　　　　　------   On   2018/9/16  22:20
+ * 获取token【APP端、PC端通用】
  */
 public class TokenTool {
     public static String getToken (HttpServletRequest request) {

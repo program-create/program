@@ -5,7 +5,7 @@ public class Authordetail {
 
     private Integer auid;
 
-    private Integer idcard;
+    private String idcard;
 
     private String address;
 
@@ -27,11 +27,11 @@ public class Authordetail {
         this.auid = auid;
     }
 
-    public Integer getIdcard() {
+    public String getIdcard() {
         return idcard;
     }
 
-    public void setIdcard(Integer idcard) {
+    public void setIdcard(String idcard) {
         this.idcard = idcard;
     }
 

@@ -15,16 +15,7 @@
   <sql id="Base_Column_List" >
     id, nickname, password, phone, flag, createtime, email, qqnumber, headimg
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_author
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_author
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+    <!--作者表信息添加-->
   <insert id="save" parameterType="com.qfedu.pojo.Author" >
     insert into t_author (nickname, password, phone, 
       flag, createtime, email, 
@@ -33,106 +24,20 @@
       1, now(), #{email,jdbcType=VARCHAR},
       #{qqnumber,jdbcType=INTEGER}, 'http:////img4.duitang.com//uploads//item//201611//23//20161123172514_ueSAZ.jpeg')
   </insert>
-  <insert id="insertSelective" parameterType="com.qfedu.pojo.Author" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_author
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="nickname != null" >
-        nickname,
-      </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="phone != null" >
-        phone,
-      </if>
-      <if test="flag != null" >
-        flag,
-      </if>
-      <if test="createtime != null" >
-        createtime,
-      </if>
-      <if test="email != null" >
-        email,
-      </if>
-      <if test="qqnumber != null" >
-        qqnumber,
-      </if>
-      <if test="headimg != null" >
-        headimg,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="nickname != null" >
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="flag != null" >
-        #{flag,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=DATE},
-      </if>
-      <if test="email != null" >
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="qqnumber != null" >
-        #{qqnumber,jdbcType=INTEGER},
-      </if>
-      <if test="headimg != null" >
-        #{headimg,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Author" >
-    update t_author
-    <set >
-      <if test="nickname != null" >
-        nickname = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="flag != null" >
-        flag = #{flag,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null" >
-        createtime = #{createtime,jdbcType=DATE},
-      </if>
-      <if test="email != null" >
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="qqnumber != null" >
-        qqnumber = #{qqnumber,jdbcType=INTEGER},
-      </if>
-      <if test="headimg != null" >
-        headimg = #{headimg,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Author" >
-    update t_author
-    set password = #{password},
-      phone = #{phone},
-      flag = #{flag},
-      createtime = #{createtime},
-      email = #{email},
-      qqnumber = #{qqnumber},
-      headimg = #{headimg}
-    where nickname = #{nickname}
-  </update>
+    <!--根据作者名查询作者信息-->
   <select id="queryByNickName" resultType="com.qfedu.pojo.Author">
     select * from t_author where nickname=#{nickname}
   </select>
+    <!--通过作者ID修改作者表信息-->
+    <update id="updateAuthor" parameterType="com.qfedu.common.vo.AuthorVo">
+        update t_author set email=#{email},qqnumber=#{qqnumber} where id=#{id}
+    </update>
+    <!--通过作者名修改密码-->
+    <update id="updateByNickName" parameterType="com.qfedu.pojo.Author">
+        update t_author set password=#{password}  where nickname=#{nickname}
+    </update>
+  <!--通过作者ID修改作者表头像-->
+  <update id="updateHeadimg" parameterType="com.qfedu.pojo.Author" >
+        update t_author set headimg=#{headimg} where id=#{id}
+    </update>
 </mapper>

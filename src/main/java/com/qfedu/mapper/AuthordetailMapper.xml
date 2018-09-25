@@ -1,88 +1,88 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.qfedu.mapper.AuthordetailMapper" >
-  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Authordetail" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="auid" property="auid" jdbcType="INTEGER" />
-    <result column="idcard" property="idcard" jdbcType="INTEGER" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="postnumber" property="postnumber" jdbcType="INTEGER" />
+<mapper namespace="com.qfedu.mapper.AuthordetailMapper">
+  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Authordetail">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="auid" property="auid" jdbcType="INTEGER"/>
+    <result column="idcard" property="idcard" jdbcType="INTEGER"/>
+    <result column="address" property="address" jdbcType="VARCHAR"/>
+    <result column="postnumber" property="postnumber" jdbcType="INTEGER"/>
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, auid, idcard, address, postnumber
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
     from t_authordetail
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_authordetail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.qfedu.pojo.Authordetail" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.qfedu.pojo.Authordetail">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_authordetail (auid, idcard, address, 
-      postnumber)
-    values (#{auid,jdbcType=INTEGER}, #{idcard,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
-      #{postnumber,jdbcType=INTEGER})
+    insert into t_authordetail (auid, idcard, address,
+    postnumber)
+    values (#{auid,jdbcType=INTEGER}, #{idcard,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
+    #{postnumber,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.qfedu.pojo.Authordetail" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.qfedu.pojo.Authordetail">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_authordetail
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="auid != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="auid != null">
         auid,
       </if>
-      <if test="idcard != null" >
+      <if test="idcard != null">
         idcard,
       </if>
-      <if test="address != null" >
+      <if test="address != null">
         address,
       </if>
-      <if test="postnumber != null" >
+      <if test="postnumber != null">
         postnumber,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="auid != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="auid != null">
         #{auid,jdbcType=INTEGER},
       </if>
-      <if test="idcard != null" >
+      <if test="idcard != null">
         #{idcard,jdbcType=INTEGER},
       </if>
-      <if test="address != null" >
+      <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
-      <if test="postnumber != null" >
+      <if test="postnumber != null">
         #{postnumber,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Authordetail" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Authordetail">
     update t_authordetail
-    <set >
-      <if test="auid != null" >
+    <set>
+      <if test="auid != null">
         auid = #{auid,jdbcType=INTEGER},
       </if>
-      <if test="idcard != null" >
+      <if test="idcard != null">
         idcard = #{idcard,jdbcType=INTEGER},
       </if>
-      <if test="address != null" >
+      <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="postnumber != null" >
+      <if test="postnumber != null">
         postnumber = #{postnumber,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Authordetail" >
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Authordetail">
     update t_authordetail
     set auid = #{auid,jdbcType=INTEGER},
       idcard = #{idcard,jdbcType=INTEGER},
@@ -90,4 +90,12 @@
       postnumber = #{postnumber,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--通过作者ID修改作者详情表信息-->
+  <update id="updateAuthorDatail" parameterType="com.qfedu.common.vo.AuthorVo">
+        update t_authordetail set address=#{address},postnumber=#{postnumber} where id=#{id}
+    </update>
+  <!--通过作者ID查询身份证是否存在-->
+  <select id="queryById" resultType="java.lang.String">
+      select authordetail.idcard from t_author author left join t_authordetail authordetail on author.id=authordetail.auid where author.id=#{id}
+  </select>
 </mapper>

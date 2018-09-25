@@ -162,7 +162,7 @@
     </collection>
   </resultMap>
   <!-- 根据书名查询图书详情 -->
-  <select id="selectByName" resultType="java.lang.HashMap" >
+  <select id="selectByName" resultType="java.util.HashMap" >
     select book.* , author.nickname as author ,img.bookimages ,
     ty.name as typename , style.name as stylename ,sch.name as schoolsname, ele.name as elementname from t_book book
     left join  t_author author on book.auid = author.id
@@ -186,7 +186,11 @@
     left join t_style style on style.id = booktag.styleid
     left join t_schools sch on sch.id = booktag.schoolsid
     left join t_element ele on ele.id = booktag.elementid
-    where book.typeid = #{typeid} limit #{index} , 20
+    where book.typeid = #{typeid} limit #{index} , #{page}
+  </select>
+
+  <select id="selectcounttype" resultType="java.lang.Integer">
+    select count(*) from t_book where typeid=#{typeid}
   </select>
 
   <!-- 根据图书风格查询图书 -->
@@ -234,6 +238,27 @@
     where ele.id = #{elementid} limit #{index} , 20
   </select>
 
+  <select id="selectcountstyle" resultType="java.lang.Integer">
+    select count(*) from t_book book
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_style style on style.id = booktag.styleid
+    where style.id = #{styleid}
+  </select>
+
+  <select id="selectcountschools" resultType="java.lang.Integer">
+    select count(*) from t_book book
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_schools sch on sch.id = booktag.schoolsid
+    where sch.id = #{schoolsid}
+  </select>
+
+  <select id="selectcountelement" resultType="java.lang.Integer">
+    select count(*) from t_book book
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_element ele on ele.id = booktag.elementid
+    where ele.id = #{elementid}
+  </select>
+
   <update id="updateMonthticket" parameterType="java.lang.Integer">
     update t_book set monthticket = #{monthticket}
     where id = #{bookid}
@@ -243,8 +268,6 @@
   <select id="selectMonthticket" resultType="java.lang.Integer" >
     select monthticket from t_book where id = #{id}
   </select>
-
-
 
 
 </mapper>

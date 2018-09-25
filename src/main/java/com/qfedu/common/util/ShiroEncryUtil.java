@@ -43,7 +43,4 @@ private static final String salt="qfedujava";
         return new String(aesCipherService.decrypt(Base64.decode(data),key.getEncoded()).getBytes());
     }
 
-
-
-
 }
