@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.qfedu.mapper.VchapterconsumeMapper" >
-  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Vchapterconsume" >
+<mapper namespace="com.qfedu.mapper.AwardrecordMapper" >
+  <resultMap id="BaseResultMap" type="com.qfedu.pojo.Awardrecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="chapteid" property="chapteid" jdbcType="INTEGER" />
+    <result column="fromwhere" property="fromwhere" jdbcType="VARCHAR" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="money" property="money" jdbcType="INTEGER" />
     <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, chapteid, uid, money, createtime
+    id, fromwhere, uid, money, createtime
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from t_vchapterconsume
+    from t_awardrecord
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_vchapterconsume
+    delete from t_awardrecord
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insertSelective" parameterType="com.qfedu.pojo.Vchapterconsume" >
+  <insert id="insertSelective" parameterType="com.qfedu.pojo.Awardrecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_vchapterconsume
+    insert into t_awardrecord
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="chapteid != null" >
-        chapteid,
+      <if test="fromwhere != null" >
+        fromwhere,
       </if>
       <if test="uid != null" >
         uid,
@@ -41,8 +41,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="chapteid != null" >
-        #{chapteid,jdbcType=INTEGER},
+      <if test="fromwhere != null" >
+        #{fromwhere,jdbcType=VARCHAR},
       </if>
       <if test="uid != null" >
         #{uid,jdbcType=INTEGER},
@@ -55,11 +55,11 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Vchapterconsume" >
-    update t_vchapterconsume
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.pojo.Awardrecord" >
+    update t_awardrecord
     <set >
-      <if test="chapteid != null" >
-        chapteid = #{chapteid,jdbcType=INTEGER},
+      <if test="fromwhere != null" >
+        fromwhere = #{fromwhere,jdbcType=VARCHAR},
       </if>
       <if test="uid != null" >
         uid = #{uid,jdbcType=INTEGER},
@@ -73,9 +73,9 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Vchapterconsume" >
-    update t_vchapterconsume
-    set chapteid = #{chapteid,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.pojo.Awardrecord" >
+    update t_awardrecord
+    set fromwhere = #{fromwhere,jdbcType=VARCHAR},
       uid = #{uid,jdbcType=INTEGER},
       money = #{money,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=TIMESTAMP}
@@ -83,13 +83,11 @@
   </update>
 
 
-  <insert id="insert" parameterType="com.qfedu.pojo.Vchapterconsume" >
+  <insert id="insert" parameterType="com.qfedu.pojo.Awardrecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_vchapterconsume (chapteid, uid, money,
-    createtime)
-    values (#{chapteid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{money,jdbcType=INTEGER},
-    now())
+    insert into t_awardrecord (fromwhere, uid, money, createtime)
+    values ('签到奖励', #{uid,jdbcType=INTEGER}, #{money,jdbcType=INTEGER}, now())
   </insert>
 </mapper>

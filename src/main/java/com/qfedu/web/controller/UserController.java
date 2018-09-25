@@ -3,8 +3,11 @@ package com.qfedu.web.controller;
 import com.qfedu.common.redis.RedisUtil;
 import com.qfedu.common.util.*;
 import com.qfedu.common.vo.R;
+import com.qfedu.pojo.Awardrecord;
 import com.qfedu.pojo.User;
+import com.qfedu.service.AwardrecordService;
 import com.qfedu.service.UserService;
+import com.qfedu.service.WalletService;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +24,10 @@ public class UserController {
     private UserService service;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private WalletService walletService;
+    @Autowired
+    private AwardrecordService awardrecordService;
 
     @GetMapping("getCode.do")
     public R getCode (String phone) {
@@ -93,17 +100,57 @@ public class UserController {
             redisUtil.set("signFlag", "我是签到标识符，代表今天已签到", 60 * 60 * 24);
             if (user.getSigindays() == 0) {
                 service.updateLoginDays(1, 10, user.getId());
-                return new R(1, "本周首次签到成功,+10积分", null);
+
+                //todo:之后两步操作应使用消息队列activeMQ来后台完成，暂时将代码写入
+                //start
+                walletService.updateXXCoin(10,user.getId());//增加钱包中的潇湘币数
+                Awardrecord awardrecord = new Awardrecord();
+                awardrecord.setUid(user.getId());
+                awardrecord.setMoney(10);
+                awardrecordService.insert(awardrecord);//增加奖励记录
+                //end
+
+                return new R(1, "本周首次签到成功,+10潇湘币", null);
             } else if (user.getSigindays() > 1 && user.getSigindays() < 7) {
                 service.updateLoginDays(1, 5, user.getId());
-                return new R(2, "签到成功,+5积分", null);
+
+                //todo:之后两步操作应使用消息队列activeMQ来后台完成，暂时将代码写入
+                //start
+                walletService.updateXXCoin(5,user.getId());//增加钱包中的潇湘币数
+                Awardrecord awardrecord = new Awardrecord();
+                awardrecord.setUid(user.getId());
+                awardrecord.setMoney(5);
+                awardrecordService.insert(awardrecord);//增加奖励记录
+                //end
+
+                return new R(2, "签到成功,+5潇湘币", null);
             } else {
                 if (SignTool.isContinuous(user.getLastsingin())) {
                     service.updateLoginDays(-6, 100, user.getId());
-                    return new R(3, "连续签到七天,+100积分", null);
+
+                    //todo:之后两步操作应使用消息队列activeMQ来后台完成，暂时将代码写入
+                    //start
+                    walletService.updateXXCoin(100,user.getId());//增加钱包中的潇湘币数
+                    Awardrecord awardrecord = new Awardrecord();
+                    awardrecord.setUid(user.getId());
+                    awardrecord.setMoney(100);
+                    awardrecordService.insert(awardrecord);//增加奖励记录
+                    //end
+
+                    return new R(3, "连续签到七天,+100潇湘币", null);
                 } else {
                     service.updateLoginDays(-6, 5, user.getId());
-                    return new R(2, "签到成功,+5积分", null);
+
+                    //todo:之后两步操作应使用消息队列activeMQ来后台完成，暂时将代码写入
+                    //start
+                    walletService.updateXXCoin(5,user.getId());//增加钱包中的潇湘币数
+                    Awardrecord awardrecord = new Awardrecord();
+                    awardrecord.setUid(user.getId());
+                    awardrecord.setMoney(5);
+                    awardrecordService.insert(awardrecord);//增加奖励记录
+                    //end
+
+                    return new R(2, "签到成功,+5潇湘币", null);
                 }
             }
         }

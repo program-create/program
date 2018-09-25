@@ -89,12 +89,17 @@
   <select id="selectMonthticket" resultType="java.lang.Integer">
     select  monthticket from t_wallet where uid=#{uid}
   </select>
-
   <select id="selectByUid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
     <include refid="Base_Column_List" />
     from t_wallet where uid = #{uid}
   </select>
+  <!--奖励潇湘币-->
+  <update id="updateXXCoin">
+    update t_wallet set money=money+#{money} where uid = #{id}
+  </update>
+
+
 
 
 </mapper>

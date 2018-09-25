@@ -26,4 +26,16 @@ public class WalletServiceImpl implements WalletService {
             return R.error();
         }
     }
+
+    @Override
+    public R updateXXCoin (int money, int uid) {
+        int i = mapper.updateXXCoin(money, uid);
+        if (i>0){
+            return R.ok();
+        } else {
+            return R.error();
+        }
+    }
+
+
 }

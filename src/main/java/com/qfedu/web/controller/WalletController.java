@@ -7,7 +7,6 @@ import com.qfedu.pojo.User;
 import com.qfedu.pojo.Wallet;
 import com.qfedu.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +34,10 @@ public class WalletController {
             return service.selectByUid(user.getId());
         }
     }
+
+//充值潇湘币
+
+//奖励潇湘币 写在“用户签到”接口中
 
 
 }

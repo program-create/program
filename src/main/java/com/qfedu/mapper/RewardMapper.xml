@@ -22,15 +22,6 @@
     delete from t_reward
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.qfedu.pojo.Reward" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_reward (bookid, propid, propnum, 
-      money, createtime)
-    values (#{bookid,jdbcType=INTEGER}, #{propid,jdbcType=INTEGER}, #{propnum,jdbcType=INTEGER}, 
-      #{money,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP})
-  </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.Reward" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
@@ -101,4 +92,15 @@
       createtime = #{createtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <insert id="insert" parameterType="com.qfedu.pojo.Reward" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_reward (bookid, propid, propnum,
+    money, createtime)
+    values (#{bookid,jdbcType=INTEGER}, #{propid,jdbcType=INTEGER}, #{propnum,jdbcType=INTEGER},
+    #{money,jdbcType=INTEGER}, now())
+  </insert>
 </mapper>
