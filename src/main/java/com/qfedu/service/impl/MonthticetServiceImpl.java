@@ -10,6 +10,9 @@ import com.qfedu.service.MonthticketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class MonthticetServiceImpl implements MonthticketService {
@@ -27,17 +30,11 @@ public class MonthticetServiceImpl implements MonthticketService {
 
         if (monthticketMapper.insertMonthticket(bookid, votename, uid) > 0) {
 
-
             int addnum = bookMapper.selectMonthticket(bookid) + votename;
 
-            System.out.println(addnum);
-            System.out.println(votename);
-
             bookMapper.updateMonthticket(bookid, addnum);
-            System.out.println("哈哈" + bookMapper.updateMonthticket(bookid, addnum));
             if (walletMapper.selectMonthticket(uid) > votename) {
                 int delnum = walletMapper.selectMonthticket(uid) - votename;
-                System.out.println(delnum);
                 walletMapper.updateMonthticket(uid, delnum);
             }
 
@@ -47,5 +44,15 @@ public class MonthticetServiceImpl implements MonthticketService {
             return false;
         }
 
+    }
+
+    @Override
+    public List<Map<String, Object>> queryLastMonthticket(int param) {
+        return monthticketMapper.selectLastMonthTicket(param);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryCurrentMonthticket(int param) {
+        return monthticketMapper.selectCurrentMonthTicket(param);
     }
 }

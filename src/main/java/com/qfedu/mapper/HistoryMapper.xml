@@ -5,10 +5,11 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="bookid" property="bookid" jdbcType="INTEGER" />
+    <result column="click" property="click" jdbcType="INTEGER"/>
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, uid, bookid, createdate
+    id, uid, bookid,click, createdate
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,9 +25,9 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_history (uid, bookid, createdate
+    insert into t_history (uid, bookid,click, createdate
       )
-    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP}
+    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER},#{click,jdbcType=INTEGER}, now()
       )
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.History" >
@@ -39,7 +40,10 @@
         uid,
       </if>
       <if test="bookid != null" >
-        bookid,
+      bookid,
+    </if>
+      <if test="click != null" >
+        click,
       </if>
       <if test="createdate != null" >
         createdate,
@@ -51,6 +55,9 @@
       </if>
       <if test="bookid != null" >
         #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="click != null" >
+        #{click,jdbcType=INTEGER},
       </if>
       <if test="createdate != null" >
         #{createdate,jdbcType=TIMESTAMP},
@@ -66,6 +73,9 @@
       <if test="bookid != null" >
         bookid = #{bookid,jdbcType=INTEGER},
       </if>
+      <if test="click != null" >
+        #{click,jdbcType=INTEGER},
+      </if>
       <if test="createdate != null" >
         createdate = #{createdate,jdbcType=TIMESTAMP},
       </if>
@@ -76,7 +86,53 @@
     update t_history
     set uid = #{uid,jdbcType=INTEGER},
       bookid = #{bookid,jdbcType=INTEGER},
+      click = #{click,jdbcType=INTEGER},
       createdate = #{createdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectTotalClick" resultType="java.util.HashMap" parameterType="int">
+    select book.name,sum(click) from t_history history
+    left join t_book book on book.id = history.bookid
+    group by bookid order by sum(click)
+    <if test="param != 0">
+      desc
+    </if>
+    limit 0,20
+  </select>
+
+  <select id="selectTotalClickByBookid"  parameterType="int">
+    select book.name,sum(click) from t_history history
+    left join t_book book on book.id = history.bookid
+    where bookid = #{bookid}
+    group by bookid
+  </select>
+
+  <select id="selectLastMonthClick" resultType="java.util.HashMap" parameterType="int">
+    select book.name,sum(click) from t_history history
+    left join t_book book on book.id = history.bookid
+    where date_format(createdate,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m')
+    group by bookid order by sum(click)
+    <if test="param != 0">
+      desc
+    </if>
+    limit 0,20
+  </select>
+
+  <select id="selectCurrentMonthClick" resultType="java.util.HashMap" parameterType="int">
+    select book.name,sum(click) from t_history history
+    left join t_book book on book.id = history.bookid
+    where date_format(createdate,'%Y-%m')=date_format(urdate(),'%Y-%m')
+    group by bookid order by sum(click)
+    <if test="param != 0">
+      desc
+    </if>
+    limit 0,20
+  </select>
+
+  <select id="selectHistoryByUid" resultType="java.util.HashMap" parameterType="int">
+    select book.name,history.createdate from t_history history
+    left join t_book book  on book.id = history.bookid
+    where uid=#{uid} group by bookid order by cratedate desc
+  </select>
 </mapper>
