@@ -3,11 +3,8 @@ package com.qfedu.web.controller;
 import com.qfedu.common.redis.RedisUtil;
 import com.qfedu.common.util.*;
 import com.qfedu.common.vo.R;
-import com.qfedu.pojo.Awardrecord;
 import com.qfedu.pojo.User;
-import com.qfedu.service.AwardrecordService;
 import com.qfedu.service.UserService;
-import com.qfedu.service.WalletService;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +21,6 @@ public class UserController {
     private UserService service;
     @Autowired
     private RedisUtil redisUtil;
-    @Autowired
-    private WalletService walletService;
-    @Autowired
-    private AwardrecordService awardrecordService;
 
     @GetMapping("getCode.do")
     public R getCode (String phone) {
@@ -90,68 +83,31 @@ public class UserController {
 
     //5.签到
     @RequestMapping("userSign.do")
-    public R userSign (HttpServletRequest req) {
+    public R userSign (HttpServletRequest req, HttpServletResponse response) {
         String token = TokenTool.getToken(req);
         User user = (User) redisUtil.get(token);
+        Integer id = user.getId();
         //外层判断：今天是否已经签到了！！
-        if (redisUtil.hasKey("signFlag")) {
+        String signFlag = "signFlag"+user.getNickname();
+        if (redisUtil.hasKey(signFlag)) {
             return new R(0, "今天已经签到过了哦", null);
         } else {
-            redisUtil.set("signFlag", "我是签到标识符，代表今天已签到", 60 * 60 * 24);
+            String signflag = "signFlag" + user.getNickname();
+            redisUtil.set(signflag, "我是签到标识符，代表今天已签到", 60 * 60 * 24);
             if (user.getSigindays() == 0) {
-                service.updateLoginDays(1, 10, user.getId());
-
-                //todo:之后两步操作应使用消息队列activeMQ来后台完成，暂时将代码写入
-                //start
-                walletService.updateXXCoin(10,user.getId());//增加钱包中的潇湘币数
-                Awardrecord awardrecord = new Awardrecord();
-                awardrecord.setUid(user.getId());
-                awardrecord.setMoney(10);
-                awardrecordService.insert(awardrecord);//增加奖励记录
-                //end
-
+                service.updateLoginDays(1, 10, id);
                 return new R(1, "本周首次签到成功,+10潇湘币", null);
-            } else if (user.getSigindays() > 1 && user.getSigindays() < 7) {
-                service.updateLoginDays(1, 5, user.getId());
-
-                //todo:之后两步操作应使用消息队列activeMQ来后台完成，暂时将代码写入
-                //start
-                walletService.updateXXCoin(5,user.getId());//增加钱包中的潇湘币数
-                Awardrecord awardrecord = new Awardrecord();
-                awardrecord.setUid(user.getId());
-                awardrecord.setMoney(5);
-                awardrecordService.insert(awardrecord);//增加奖励记录
-                //end
-
-                return new R(2, "签到成功,+5潇湘币", null);
-            } else {
+            } else if (user.getSigindays() > 0 && user.getSigindays() < 6) {
                 if (SignTool.isContinuous(user.getLastsingin())) {
-                    service.updateLoginDays(-6, 100, user.getId());
-
-                    //todo:之后两步操作应使用消息队列activeMQ来后台完成，暂时将代码写入
-                    //start
-                    walletService.updateXXCoin(100,user.getId());//增加钱包中的潇湘币数
-                    Awardrecord awardrecord = new Awardrecord();
-                    awardrecord.setUid(user.getId());
-                    awardrecord.setMoney(100);
-                    awardrecordService.insert(awardrecord);//增加奖励记录
-                    //end
-
-                    return new R(3, "连续签到七天,+100潇湘币", null);
+                    service.updateLoginDays(1, 5, id);
+                    return new R(2, "连续签到成功,+5潇湘币", null);
                 } else {
-                    service.updateLoginDays(-6, 5, user.getId());
-
-                    //todo:之后两步操作应使用消息队列activeMQ来后台完成，暂时将代码写入
-                    //start
-                    walletService.updateXXCoin(5,user.getId());//增加钱包中的潇湘币数
-                    Awardrecord awardrecord = new Awardrecord();
-                    awardrecord.setUid(user.getId());
-                    awardrecord.setMoney(5);
-                    awardrecordService.insert(awardrecord);//增加奖励记录
-                    //end
-
-                    return new R(2, "签到成功,+5潇湘币", null);
+                    service.updateLoginDays((1 - user.getSigindays()), 5, id);
+                    return new R(4, "签到成功,+5潇湘币", null);
                 }
+            } else {
+                service.updateLoginDays(-6, 100, id);
+                return new R(3, "连续签到七天,+100潇湘币", null);
             }
         }
     }
@@ -185,11 +141,20 @@ public class UserController {
 
     //    9.清除签到状态
     @RequestMapping("delSignFlag.do")
-    public void delSignFlag(){
+    public void delSignFlag () {
         try {
             service.delSignFlag();
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+    }
+
+    //   10.用户注销
+    @RequestMapping("userLogout.do")
+    public R userLogout (HttpServletRequest request, HttpServletResponse response) {
+        String token = CookieUtil.getCk(request, "token");
+        redisUtil.del(token);
+        CookieUtil.delCK(response, "token");
+        return new R(0, "注销成功", null);
     }
 }
