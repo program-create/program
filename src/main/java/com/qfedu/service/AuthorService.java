@@ -23,7 +23,7 @@ public interface AuthorService {
     R loginCheck(HttpServletRequest request);
 
     //注销
-    R loginOut(String token);
+    R loginOut(HttpServletRequest request);
 
     //作者密码重置--忘记密码 第一步
     R updatePassword1(String nickname,String idcard);

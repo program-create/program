@@ -130,10 +130,20 @@ public class AuthorServiceimpl implements AuthorService {
 
     //注销
     @Override
-    public R loginOut(String token) {
-        //删除Redis
-        redisUtil.del(token);
-        return R.ok();
+    public R loginOut(HttpServletRequest request) {
+        //获取token
+        String token = TokenTool.getToken(request);
+        if (token != null & token.length() > 0) {
+            //判断该token是否存在
+            if (redisUtil.hasKey(token)) {
+                //删除Redis
+                redisUtil.del(token);
+                return R.ok();
+            } else {
+                return new R(0, "token已失效", null);
+            }
+        }
+        return R.error();
     }
 
     //作者密码重置--忘记密码 第一步

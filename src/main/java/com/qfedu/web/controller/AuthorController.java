@@ -114,6 +114,8 @@ public class AuthorController {
                 try {
                     //把前端图片存入文件夹
                     headimg.transferTo(file);
+                    //刷新令牌时间
+                    redisUtil.expire(token,30*60);
                     //返回上传文件路径【ResultVo.setOK(时间动态文件夹+File.separator+保存图片文件夹+File.separator+图片名称);】
                     return new R(0,"上传成功",dir.getParentFile().getName()+File.separator+dir.getName()+File.separator+file.getName());
                 } catch (Exception e) {
@@ -135,4 +137,10 @@ public class AuthorController {
         return authorService.updateHeadimg(headimg,request);
     }
 
+    //注销
+    @RequestMapping("/updateheadimg.do")
+    @ResponseBody
+    public R loginOut(HttpServletRequest request){
+        return authorService.loginOut(request);
+    }
 }
