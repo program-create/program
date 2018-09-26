@@ -16,12 +16,12 @@ public class HistoryServiceImpl implements HistoryService {
     private HistoryMapper historyMapper;
 
     @Override
-    public boolean saveHistory(History history) {
-        return false;
+    public boolean saveHistory(History history)  {
+        return historyMapper.insert(history) > 0;
     }
 
     @Override
-    public List<Map<String, Object>> queryTotalClick(int param) {
+    public List<Map<String, Object>> queryTotalClick(int param)  {
         return historyMapper.selectTotalClick(param);
     }
 
@@ -41,7 +41,10 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public List<Map<String, Object>> queryHistoryByUid(int uid) {
+    public List<Map<String, Object>> queryHistoryByUid(int uid)  {
+
+
+
         return historyMapper.selectHistoryByUid(uid);
     }
 }

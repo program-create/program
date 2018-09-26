@@ -122,7 +122,7 @@
   <select id="selectCurrentMonthClick" resultType="java.util.HashMap" parameterType="int">
     select book.name,sum(click) from t_history history
     left join t_book book on book.id = history.bookid
-    where date_format(createdate,'%Y-%m')=date_format(urdate(),'%Y-%m')
+    where date_format(createdate,'%Y-%m')=date_format(curdate(),'%Y-%m')
     group by bookid order by sum(click)
     <if test="param != 0">
       desc
@@ -133,6 +133,6 @@
   <select id="selectHistoryByUid" resultType="java.util.HashMap" parameterType="int">
     select book.name,history.createdate from t_history history
     left join t_book book  on book.id = history.bookid
-    where uid=#{uid} group by bookid order by cratedate desc
+    where uid=#{uid} group by bookid order by createdate desc
   </select>
 </mapper>

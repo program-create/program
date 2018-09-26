@@ -1,5 +1,8 @@
 package com.qfedu.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+
 import java.util.Date;
 
 public class History {
@@ -50,6 +53,19 @@ public class History {
     }
 
     public void setCreatedate(Date createdate) {
+
         this.createdate = createdate;
+
+    }
+
+    @Override
+    public String toString() {
+        return "History{" +
+                "id=" + id +
+                ", uid=" + uid +
+                ", bookid=" + bookid +
+                ", click=" + click +
+                ", createdate=" + createdate +
+                '}';
     }
 }
