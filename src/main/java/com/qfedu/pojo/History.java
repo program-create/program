@@ -9,7 +9,17 @@ public class History {
 
     private Integer bookid;
 
+    private Integer click;
+
     private Date createdate;
+
+    public Integer getClick() {
+        return click;
+    }
+
+    public void setClick(Integer click) {
+        this.click = click;
+    }
 
     public Integer getId() {
         return id;

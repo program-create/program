@@ -17,4 +17,26 @@
   values (null,#{bookid},now(),#{votenum},#{uid})
 </insert>
 
+  <select id="selectLastMonthTicket" resultType="java.util.HashMap">
+    select book.name, sum(votenum) from t_monthticket monthticket
+     left join t_book book on book.id = monthticket.bookid
+     where date_format(votetime,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m')
+     GROUP BY bookid order by sum(votenum)
+    <if test = "param != 0">
+      desc
+    </if>
+  </select>
+
+  <select id="selectCurrentMonthTicket" resultType="java.util.HashMap" parameterType="int">
+    select book.name, sum(votenum) from t_monthticket monthticket
+     left join t_book book on book.id = monthticket.bookid
+     where date_format(votetime,'%Y-%m')=date_format(curdate(),'%Y-%m')
+     GROUP BY bookid order by sum(votenum)
+    <if test = "param != 0">
+      desc
+    </if>
+  </select>
+
+
+
 </mapper>

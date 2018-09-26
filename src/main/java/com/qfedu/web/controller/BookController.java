@@ -1,5 +1,7 @@
 package com.qfedu.web.controller;
 
+import com.qfedu.common.redis.RedisUtil;
+import com.qfedu.common.util.TokenTool;
 import com.qfedu.common.vo.PageVo;
 import com.qfedu.common.vo.R;
 import com.qfedu.pojo.Author;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -19,10 +22,15 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
 
     @PostMapping("/addbook.do")
-    public R addbook (Book book, HttpSession session) {
-        Author author = (Author) session.getAttribute("author");
+    public R addbook (Book book, HttpServletRequest request) {
+        String token = TokenTool.getToken(request);
+
+        Author author = (Author) redisUtil.get(token);
 
         book.setAuid(author.getId());
 
@@ -31,9 +39,11 @@ public class BookController {
 
     //修改图书信息
     @RequestMapping("/updatebook.do")
-    public R updatebook(Book book, HttpSession session) {
+    public R updatebook(Book book, HttpServletRequest request) {
 
-        Author author = (Author) session.getAttribute("author");
+        String token = TokenTool.getToken(request);
+
+        Author author = (Author) redisUtil.get(token);
 
         return bookService.updateBook(book);
     }

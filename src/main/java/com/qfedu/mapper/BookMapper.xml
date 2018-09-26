@@ -264,7 +264,6 @@
     where id = #{bookid}
   </update>
 
-
   <select id="selectMonthticket" resultType="java.lang.Integer" >
     select monthticket from t_book where id = #{id}
   </select>
