@@ -8,6 +8,7 @@ import com.qfedu.pojo.Wallet;
 import com.qfedu.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public class WalletController {
     @Autowired
     private RedisUtil redisUtil;
 
-//    获取当前用户钱包详情：潇湘币、月票
+    //    获取当前用户钱包详情：潇湘币、月票
     @GetMapping("wallet.do")
     public R wallet (HttpServletRequest request) {
         String token = TokenTool.getToken(request);
@@ -39,5 +40,13 @@ public class WalletController {
 
 //奖励潇湘币 写在“用户签到”接口中
 
+
+    //    测试更新潇湘币数量的接口
+    @RequestMapping("updcoin.do")
+    public R updcoin (int scores, int id) {
+        scores = 5;
+        id = 2;
+        return service.updateXXCoin(scores, id);
+    }
 
 }
