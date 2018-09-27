@@ -138,7 +138,7 @@ public class AuthorController {
     }
 
     //注销
-    @RequestMapping("/updateheadimg.do")
+    @RequestMapping("/loginout.do")
     @ResponseBody
     public R loginOut(HttpServletRequest request){
         return authorService.loginOut(request);

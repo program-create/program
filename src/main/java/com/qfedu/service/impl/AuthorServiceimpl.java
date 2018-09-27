@@ -45,13 +45,13 @@ public class AuthorServiceimpl implements AuthorService {
                         if (authorMapper.save(author) > 0) {
                             return R.ok();
                         }
-                        return new R(1,"注册失败",null);
+                        return new R(1001,"注册失败",null);
                     }
-                    return new R(1,"作者名已被占用",null);
+                    return new R(1002,"作者名已被占用",null);
                 }
-                return new R(1, "验证码不一致", null);
+                return new R(1003, "验证码不一致", null);
             }
-            return new R(1, "验证码已失效", null);
+            return new R(1004, "验证码已失效", null);
         }
         return R.error();
     }
@@ -78,7 +78,7 @@ public class AuthorServiceimpl implements AuthorService {
                 }
                 return R.error();
             }
-            return new R(1, "令牌失效", null);
+            return new R(1005, "token已失效", null);
         }
         return R.error();
     }
@@ -100,11 +100,11 @@ public class AuthorServiceimpl implements AuthorService {
                 redisUtil.set(token,author, 30*60);
                 //5、令牌记录到Cookie
                 CookieUtil.setCK(response, "token", token);
-                return new R(0, "登陆成功", token);
+                return new R(0001, "登陆成功", token);
             }
-            return new R(1, "密码错误", null);
+            return new R(1006, "密码错误", null);
         } else {
-            return new R(1, "用户不存在",null);
+            return new R(1007, "用户不存在",null);
         }
     }
 
@@ -120,12 +120,12 @@ public class AuthorServiceimpl implements AuthorService {
                 String json = (String) redisUtil.get(token);
                 //重新设置时间
                 redisUtil.expire(token, 30*60);
-                return new R(0, "OK", JSON.parseObject(json, Author.class));
+                return new R(0002, "单点登陆验证成功", JSON.parseObject(json, Author.class));
             } else {
-                return new R(0, "token已失效", null);
+                return new R(1008, "token已失效", null);
             }
         }
-        return new R(0, "未登录", null);
+        return new R(1009, "未登录", null);
     }
 
     //注销
@@ -140,7 +140,7 @@ public class AuthorServiceimpl implements AuthorService {
                 redisUtil.del(token);
                 return R.ok();
             } else {
-                return new R(0, "token已失效", null);
+                return new R(1008, "token已失效", null);
             }
         }
         return R.error();
@@ -155,11 +155,11 @@ public class AuthorServiceimpl implements AuthorService {
             String idcard1 = authordetailMapper.queryById(author.getId());
             if (idcard1 != null && idcard.length() > 0 && Objects.equals(idcard1,idcard)) {
                 //验证成功返回手机号
-                return new R(0, "OK", author.getPhone());
+                return new R(0003, "验证成功", author.getPhone());
             }
-            return new R(1, "身份证错误", null);
+            return new R(1010, "身份证错误", null);
         }
-        return new R(1, "作者名错误", null);
+        return new R(1011, "作者名错误", null);
     }
 
     //作者密码重置--忘记密码 第三步
@@ -190,7 +190,7 @@ public class AuthorServiceimpl implements AuthorService {
                 }
                 return R.error();
             }
-            return new R(1, "令牌失效", null);
+            return new R(1008, "token已失效", null);
         }
         return R.error();
     }
