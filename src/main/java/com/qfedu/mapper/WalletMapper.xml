@@ -96,7 +96,7 @@
   </select>
   <!--奖励潇湘币-->
   <update id="updateXXCoin">
-    update t_wallet set money=money+#{money} where uid = #{id}
+    update t_wallet set money=money+#{money} where uid = #{uid}
   </update>
 
 

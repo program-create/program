@@ -96,11 +96,11 @@ public class UserController {
             redisUtil.set(signflag, "我是签到标识符，代表今天已签到", 60 * 60 * 24);
             if (user.getSigindays() == 0) {
                 service.updateLoginDays(1, 10, id);
-                return new R(1, "本周首次签到成功,+10潇湘币", null);
+                return new R(1, "本周首次签到,+10潇湘币", null);
             } else if (user.getSigindays() > 0 && user.getSigindays() < 6) {
                 if (SignTool.isContinuous(user.getLastsingin())) {
                     service.updateLoginDays(1, 5, id);
-                    return new R(2, "连续签到成功,+5潇湘币", null);
+                    return new R(2, "连续签到,+5潇湘币", null);
                 } else {
                     service.updateLoginDays((1 - user.getSigindays()), 5, id);
                     return new R(4, "签到成功,+5潇湘币", null);

@@ -1,7 +1,7 @@
 /**  
 * @Title: FileUtils233.java
 * @Package com.qfedu.common.utils  
-* @Description: TODO(用一句话描述该文件做什么)  
+* @Description: (用一句话描述该文件做什么)
 * @author Feri 
 * @date 2018年5月29日  
 * @version V1.0  
@@ -16,7 +16,7 @@ import java.util.UUID;
 /**  
 * @Title: FileUtils233.java
 * @Package com.qfedu.common.utils  
-* @Description: TODO(用一句话描述该文件做什么)  
+* @Description: (用一句话描述该文件做什么)
 * @author Feri  
 * @date 2018年5月29日  
 * @version V1.0  

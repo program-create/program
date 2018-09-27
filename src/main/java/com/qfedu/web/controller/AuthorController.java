@@ -119,7 +119,6 @@ public class AuthorController {
                     //返回上传文件路径【ResultVo.setOK(时间动态文件夹+File.separator+保存图片文件夹+File.separator+图片名称);】
                     return new R(0,"上传成功",dir.getParentFile().getName()+File.separator+dir.getName()+File.separator+file.getName());
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     return R.error();
                 }
@@ -138,7 +137,7 @@ public class AuthorController {
     }
 
     //注销
-    @RequestMapping("/updateheadimg.do")
+    @RequestMapping("/authorlogout.do")
     @ResponseBody
     public R loginOut(HttpServletRequest request){
         return authorService.loginOut(request);

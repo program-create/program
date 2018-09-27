@@ -30,7 +30,6 @@ public class ALiYunNote {
         try {
             DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
         } catch (ClientException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         IAcsClient acsClient = new DefaultAcsClient(profile);
@@ -56,10 +55,8 @@ public class ALiYunNote {
         try {
             sendSmsResponse = acsClient.getAcsResponse(request);
         } catch (ServerException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ClientException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         if(sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
