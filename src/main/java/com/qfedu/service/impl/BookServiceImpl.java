@@ -40,23 +40,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book queryBookByName(String bookname) {
-    try {
-        System.out.println("查询图书");
+    public Map<String,Object> queryBookByName(String bookname) {
 
-        Book book = bookMapper.selectByName(bookname);
-
-        return book;
-
-    }
-        catch (Exception e) {
-        e.printStackTrace();
-    }
-    return bookMapper.selectByName(bookname);
+        return bookMapper.selectByName(bookname);
     }
 
     @Override
-    public Book queryBookById(Integer id) {
+    public Map<String, Object> queryBookById(Integer id) {
 
 
         return bookMapper.selectByPrimaryKey(id);

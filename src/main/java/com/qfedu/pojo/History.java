@@ -1,9 +1,9 @@
 package com.qfedu.pojo;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+
 
 public class History {
     private Integer id;
@@ -53,9 +53,7 @@ public class History {
     }
 
     public void setCreatedate(Date createdate) {
-
         this.createdate = createdate;
-
     }
 
     @Override

@@ -16,11 +16,16 @@
   <sql id="Base_Column_List" >
     id, name, auid, typeid, status, expense, wordnum,monthticket,flag, info
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BookDetail" parameterType="java.lang.Integer" >
-    select book.* , author.* ,img.bookimages as images,ty.name as typename from t_book book
+  <select id="selectByPrimaryKey" resultType="java.util.HashMap" parameterType="java.lang.Integer" >
+    select book.* , author.nickname as author ,img.bookimages ,
+    ty.name as typename , style.name as stylename ,sch.name as schoolsname, ele.name as elementname from t_book book
     left join  t_author author on book.auid = author.id
     left join t_bookimg img on img.bookid = book.id
     left join t_type ty on ty.id = book.typeid
+    left join t_booktag booktag on booktag.bookid = book.id
+    left join t_style style on style.id = booktag.styleid
+    left join t_schools sch on sch.id = booktag.schoolsid
+    left join t_element ele on ele.id = booktag.elementid
     where book.id = #{id}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -117,7 +122,7 @@
         monthticket = #{monthticket,jdbcType=INTEGER},
       </if>
       <if test="flag != null" >
-        #{flag,jdbcType=INTEGER},
+        flag = #{flag,jdbcType=INTEGER},
       </if>
       <if test="info != null" >
         info = #{info,jdbcType=VARCHAR},

@@ -4,15 +4,17 @@ import com.qfedu.common.vo.PageVo;
 import com.qfedu.common.vo.R;
 import com.qfedu.pojo.Book;
 
+import java.util.Map;
+
 public interface BookService {
 
     R addBook(Book book);
 
     R updateBook(Book book);
 
-    Book queryBookByName(String bookname);
+    Map<String,Object> queryBookByName(String bookname);
 
-    Book queryBookById(Integer id);
+    Map<String,Object> queryBookById(Integer id);
 
     PageVo queryBookByType(int typeid, int page,int pagenum);
 

@@ -27,7 +27,7 @@
     </selectKey>
     insert into t_history (uid, bookid,click, createdate
       )
-    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER},#{click,jdbcType=INTEGER}, now()
+    values (#{uid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER},1, now()
       )
   </insert>
   <insert id="insertSelective" parameterType="com.qfedu.pojo.History" >

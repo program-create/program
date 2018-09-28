@@ -1,11 +1,9 @@
 package com.qfedu.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.qfedu.common.quartz.QuartzForDelSignFlag;
 import com.qfedu.common.redis.RedisUtil;
 import com.qfedu.common.util.EncrypUtil;
 import com.qfedu.common.util.ShiroEncryUtil;
-import com.qfedu.common.vo.MQVo;
 import com.qfedu.common.vo.R;
 import com.qfedu.mapper.UserMapper;
 import com.qfedu.pojo.User;
@@ -13,7 +11,6 @@ import com.qfedu.service.UserService;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -24,8 +21,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper mapper;
     @Autowired
     private RedisUtil redisUtil;
-    @Autowired
-    private JmsTemplate jmsTemplate;
 
     @Override
     public boolean regist (User user, int code, int phonecode) {
@@ -63,14 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateLoginDays (int num, int scores, int id) {
-        int i = mapper.updateLoginDays(num, scores, id);
-        if (i>0){
-            String json = JSON.toJSONString(new MQVo(1,scores,id));
-            System.out.println("start");
-            jmsTemplate.send(session -> session.createTextMessage(json));
-            System.out.println("end");
-        }
-        return i;
+        return mapper.updateLoginDays(num, scores, id);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class PageVo<T> {
     public static <T> PageVo<T> createPage(List<Map<String,Object>> data, int count){
         PageVo<T> pageVo=new PageVo<>();
         pageVo.setCode(0);
-        pageVo.setMsg("OK");
+        pageVo.setMsg("查询结果成功");
         pageVo.setCount(count);
         pageVo.setData(data);
         return pageVo;

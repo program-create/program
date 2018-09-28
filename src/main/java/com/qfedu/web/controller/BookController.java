@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 public class BookController {
@@ -27,6 +28,7 @@ public class BookController {
 
 
     @PostMapping("/addbook.do")
+    @ResponseBody
     public R addbook (Book book, HttpServletRequest request) {
         String token = TokenTool.getToken(request);
 
@@ -39,16 +41,26 @@ public class BookController {
 
     //修改图书信息
     @RequestMapping("/updatebook.do")
+    @ResponseBody
     public R updatebook(Book book, HttpServletRequest request) {
 
         String token = TokenTool.getToken(request);
 
         Author author = (Author) redisUtil.get(token);
 
-        return bookService.updateBook(book);
+        if (author.getId() == book.getAuid()) {
+
+            return bookService.updateBook(book);
+        } else {
+            R r = new R();
+            r.setCode(2);
+            r.setMsg("只有作者本人才能修改图书信息");
+
+            return r;
+        }
     }
 
-    //查询图书根据书名
+    //根据书名查询图书
     @RequestMapping("/querybookbyname.do")
     @ResponseBody
     public R querybookbyname(String bookname) {
@@ -56,39 +68,38 @@ public class BookController {
         System.out.println(bookname);
 
         R r=new R();
-        Book book = bookService.queryBookByName(bookname);
-        System.out.println(book);
+        Map<String, Object> map = bookService.queryBookByName(bookname);
 
-        if (book != null ) {
+        if (map != null ) {
             r.setCode(1001);
             r.setMsg("查询图书成功");
-            r.setData(book);
+            r.setData(map);
         } else {
             r.setCode(1002);
             r.setMsg("查询失败");
-            r.setData(book);
+            r.setData(null);
         }
         return r;
     }
 
-    //查询图书根据书名
+    //根据书名查询图书
     @RequestMapping("/querybookbyid.do")
     @ResponseBody
     public R querybookbyid(int id) {
 
         R r = new R();
-        Book book = bookService.queryBookById(id);
+        Map<String,Object> map = bookService.queryBookById(id);
 
-        if (book != null ) {
+        if (map != null ) {
             r.setCode(1001);
             r.setMsg("查询图书成功");
-            r.setData(book);
+            r.setData(map);
 
             return r;
         } else {
             r.setCode(1002);
             r.setMsg("查询失败");
-            r.setData(book);
+            r.setData(null);
             return r;
         }
     }
